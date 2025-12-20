@@ -3,6 +3,8 @@ kind: ServiceAccount
 metadata:
   name: botmother-sa
   namespace: botmother
+imagePullSecrets:
+- name: registry-secret
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
