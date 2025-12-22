@@ -33,6 +33,9 @@ spec:
             cpu: "100m"
             memory: "128Mi"
         volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
         - name: media
           mountPath: /usr/share/nginx/html/resources/media
           readOnly: true
@@ -55,6 +58,9 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 5
       volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
       - name: media
         persistentVolumeClaim:
           claimName: media-pvc
