@@ -6,11 +6,9 @@ namespace: botmother
 resources:
   - namespace.yaml
   - configmap-botmother.yaml
-  - configmap-nginx.yaml
   - secret.yaml
   - pvc.yaml
   - deployment-web.yaml
-  - deployment-nginx.yaml
   - deployment-celery-worker.yaml
   - deployment-celery-beat.yaml
   - deployment-webhook.yaml

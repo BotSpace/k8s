@@ -13,13 +13,13 @@ labels:
 
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: latest
+    newTag: "1.0.0-dev"
   - name: registry.jscorp.uz/botmother-sales
     newTag: latest
   - name: jscorptech/botmother-admin
     newTag: latest
   - name: jscorptech/botmother-constructor
-    newTag: latest
+    newTag: "1.0.0-dev"
   - name: registry.jscorp.uz/botmother-webhook-service
     newTag: latest
   - name: nginx
