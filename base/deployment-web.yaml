@@ -22,6 +22,9 @@ spec:
       labels:
         app: botmother
         component: web
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
     spec:
       containers:
         - name: web
@@ -52,6 +55,8 @@ spec:
                 name: click-secret
             - secretRef:
                 name: bot-secret
+            - secretRef:
+                name: jwt-secret
           resources:
             requests:
               cpu: 500m
@@ -70,18 +75,32 @@ spec:
             httpGet:
               path: /health/
               port: 8000
+              scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 10
             failureThreshold: 3
+            successThreshold: 1
           readinessProbe:
             httpGet:
               path: /health/
               port: 8000
+              scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+            successThreshold: 1
       imagePullSecrets:
         - name: botmother-registry
       volumes:

@@ -1,0 +1,22 @@
+# Secrets
+*.secret.yaml
+*-secret.yaml
+secrets/
+
+# Environment specific
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

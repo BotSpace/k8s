@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: botmother-config
+  namespace: botmother
+data:
+  # Django configs
+  DEBUG: "False"
+  DJANGO_SETTINGS_MODULE: "config.settings.production"
+  PROJECT_ENV: "prod"
+  PROTOCOL_HTTPS: "True"
+
+  # OTP configs
+  OTP_SIZE: "4"
+  OTP_PROD: "true"
+  OTP_MODULE: "core.services.otp"
+  OTP_SERVICE: "EskizService"
+
+  DB_ENGINE: "django.db.backends.postgresql_psycopg2"
+
+  # Cache configs (connection details for external Redis)
+  CACHE_BACKEND: "django.core.cache.backends.redis.RedisCache"
+  REDIS_PORT: "6379"
+  CACHE_ENABLED: "True"
+  CACHE_TIMEOUT: "120"
+
+  # Vite settings
+  VITE_LIVE: "False"
+  VITE_PORT: "5173"
+  VITE_HOST: "127.0.0.1"
+
+  # Storage
+  STORAGE_DEFAULT: "FILE"
+  STORAGE_STATIC: "STATIC"
+
+  # Kubernetes config
+  K8S_NAMESPACE: "botmother"
+
+  # Pricing
+  RAM_PRICE: "1000"
+  CPU_PRICE: "1000"
+  NET_RX_PRICE: "1000"
+  NET_TX_PRICE: "1000"
+  STORAGE_PRICE: "1000"
+
+  # Prometheus
+  PROMETHEUS_MULTIPROC_DIR: "/tmp/prometheus_metrics"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: market-config
+  namespace: botmother
+data:
+  DEBUG: "true"
+  NEXT_PUBLIC_API: "https://api.botmother.uz"
+  CONSTRUCTOR_URL: "https://constructor.botmother.uz"
+  SALES_URL: "http://example.com"
+  ADMIN_PANEL: "http://example.com"
+  NEXTAUTH_SECRET: "mpfxsuQEwZsmh65jFLPa0WI06l5GvysJnUFnGOXkiu4dewdwef=mpfxsuQEwZsmh65jFLPa0WI06l5GvysJnUFnGOXkiu4="
+  TELEGRAM_BOT_TOKEN: "8581696068:AAG2VQWC4bT-FojJVg1iwBqQuxVqOu7L4-I"
+  TELEGRAM_CHAT_ID: ""
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: admin-config
+  namespace: botmother
+data:
+  DEBUG: "true"
+  NEXT_PUBLIC_API: "https://api.botmother.uz"
+  CONSTRUCTOR_URL: "http://constructor:3000"
+  SALES_URL: "http://market:3000"
+  NEXTAUTH_SECRET: "mpfxsuQEwZsmh65jFLPa0WI06l5GvysJnUFnGOXkiu4dewdwef=mpfxsuQEwZsmh65jFLPa0WI06l5GvysJnUFnGOXkiu4="
+  NEXTAUTH_URL: "https://botmother.uz"
+  PORT: "3000"
+  NODE_ENV: "production"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: constructor-config
+  namespace: botmother
+data:
+  DEBUG: "false"
+  NEXT_PUBLIC_API: "https://botlarnionasi.jscorp.uz"
+  CONSTRUCTOR_URL: ""
+  ADMIN_PANEL: ""
+  NEXTAUTH_SECRET: "D$%^NEXTAUTH_SECRET=TIO*U(PI))OUY*NEXTAUTH_SECRET=^%"
+  MONO: "0"
+  PORT: "3000"
+  NODE_ENV: "production"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-config
+  namespace: botmother
+data:
+  PORT: "8080"
+  REDIS_ADDR: "redis:6379"
+  API_URL: "https://api.botmother.uz"
+  CACHE_TTL_SECONDS: "300"
+  BOT_TOKEN: ""

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: market
+  namespace: botmother
+  labels:
+    app: market
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: market
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: market
+        component: frontend
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      containers:
+        - name: market
+          image: registry.jscorp.uz/botmother-sales:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: market-config
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      imagePullSecrets:
+        - name: botmother-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: market
+  namespace: botmother
+  labels:
+    app: market
+spec:
+  type: ClusterIP
+  selector:
+    app: market
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP

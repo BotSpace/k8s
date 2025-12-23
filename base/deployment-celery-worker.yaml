@@ -22,6 +22,8 @@ spec:
       labels:
         app: botmother
         component: celery-worker
+      annotations:
+        prometheus.io/scrape: "false"
     spec:
       containers:
         - name: celery-worker
@@ -45,12 +47,13 @@ spec:
                 name: click-secret
             - secretRef:
                 name: bot-secret
+
           resources:
             requests:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 100m
+              memory: 128Mi
             limits:
-              cpu: 1000m
-              memory: 1Gi
+              cpu: 2000m
+              memory: 2048Mi
       imagePullSecrets:
         - name: botmother-registry

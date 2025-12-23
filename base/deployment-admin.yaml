@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin
+  namespace: botmother
+  labels:
+    app: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: admin
+        component: frontend
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      containers:
+        - name: admin
+          image: jscorptech/botmother-admin:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: admin-config
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      imagePullSecrets:
+        - name: botmother-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin
+  namespace: botmother
+  labels:
+    app: admin
+spec:
+  type: ClusterIP
+  selector:
+    app: admin
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
