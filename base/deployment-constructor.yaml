@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: constructor
+  namespace: botmother
+  labels:
+    app: constructor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: constructor
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: constructor
+        component: frontend
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      containers:
+        - name: constructor
+          image: jscorptech/botmother-constructor:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: constructor-config
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      imagePullSecrets:
+        - name: botmother-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: constructor
+  namespace: botmother
+  labels:
+    app: constructor
+spec:
+  type: ClusterIP
+  selector:
+    app: constructor
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP

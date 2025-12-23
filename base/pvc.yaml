@@ -5,11 +5,11 @@ metadata:
   namespace: botmother
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: local-path
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -18,11 +18,11 @@ metadata:
   namespace: botmother
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
-  storageClassName: local-path
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -31,8 +31,8 @@ metadata:
   namespace: botmother
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
-  storageClassName: local-path
+  storageClassName: nfs-client
