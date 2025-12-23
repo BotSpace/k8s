@@ -52,7 +52,7 @@ metadata:
   labels:
     app: admin
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: admin
   ports:
@@ -60,3 +60,4 @@ spec:
       port: 3000
       targetPort: 3000
       protocol: TCP
+      nodePort: 30001
