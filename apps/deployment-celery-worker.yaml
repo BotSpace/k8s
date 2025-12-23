@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botmother-celery-worker
+  namespace: botmother
+  labels:
+    app: botmother
+    component: celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botmother
+      component: celery-worker
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: botmother
+        component: celery-worker
+    spec:
+      containers:
+        - name: celery-worker
+          image: registry.jscorp.uz/botmother:latest
+          imagePullPolicy: Always
+          command: ["sh", "./resources/scripts/celery-worker.sh"]
+          envFrom:
+            - configMapRef:
+                name: botmother-config
+            - secretRef:
+                name: botmother-secret
+            - secretRef:
+                name: database-secret
+            - secretRef:
+                name: mongo-secret
+            - secretRef:
+                name: redis-secret
+            - secretRef:
+                name: django-secret
+            - secretRef:
+                name: click-secret
+            - secretRef:
+                name: bot-secret
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+      imagePullSecrets:
+        - name: botmother-registry

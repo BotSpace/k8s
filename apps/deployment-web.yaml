@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botmother-web
+  namespace: botmother
+  labels:
+    app: botmother
+    component: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botmother
+      component: web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: botmother
+        component: web
+    spec:
+      containers:
+        - name: web
+          image: registry.jscorp.uz/botmother:latest
+          imagePullPolicy: Always
+          command: ["sh", "./resources/scripts/entrypoint-server.sh"]
+          ports:
+            - containerPort: 8000
+              name: http
+              protocol: TCP
+          env:
+            - name: PYTHONPYCACHEPREFIX
+              value: "/var/cache/pycache"
+          envFrom:
+            - configMapRef:
+                name: botmother-config
+            - secretRef:
+                name: botmother-secret
+            - secretRef:
+                name: database-secret
+            - secretRef:
+                name: mongo-secret
+            - secretRef:
+                name: redis-secret
+            - secretRef:
+                name: django-secret
+            - secretRef:
+                name: click-secret
+            - secretRef:
+                name: bot-secret
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          volumeMounts:
+            - name: media
+              mountPath: /code/resources/media
+            - name: static
+              mountPath: /code/resources/staticfiles
+            - name: logs
+              mountPath: /code/resources/logs
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: botmother-registry
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: botmother-media
+        - name: static
+          persistentVolumeClaim:
+            claimName: botmother-static
+        - name: logs
+          persistentVolumeClaim:
+            claimName: botmother-logs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: botmother
+  labels:
+    app: botmother
+    component: web
+spec:
+  type: ClusterIP
+  selector:
+    app: botmother
+    component: web
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
