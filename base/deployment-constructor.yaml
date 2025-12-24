@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: constructor
-          image: jscorptech/botmother-constructor:latest
+          image: registry.jscorp.uz/botmother-constructor:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
