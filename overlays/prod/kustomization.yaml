@@ -17,8 +17,8 @@ images:
   - name: registry.jscorp.uz/botmother-sales
     newTag: latest
   - name: jscorptech/botmother-admin
-    newTag: latest
-  - name: jscorptech/botmother-constructor
+    newTag: "1.0.0-dev"
+  - name: registry.jscorp.uz/botmother-constructor
     newTag: "1.0.0-dev"
   - name: registry.jscorp.uz/botmother-webhook-service
     newTag: latest
@@ -32,77 +32,64 @@ configMapGenerator:
       - DEBUG=false
       - LOG_LEVEL=INFO
 #
-# patches:
-#   - target:
-#       kind: Deployment
-#       name: botmother-web
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 3
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/requests/cpu
-#         value: 1000m
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/requests/memory
-#         value: 1Gi
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/limits/cpu
-#         value: 4000m
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/limits/memory
-#         value: 4Gi
-#   - target:
-#       kind: Deployment
-#       name: botmother-nginx
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 2
-#   - target:
-#       kind: Deployment
-#       name: webhook
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 3
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/requests/cpu
-#         value: 1000m
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/requests/memory
-#         value: 1Gi
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/limits/cpu
-#         value: 4000m
-#       - op: replace
-#         path: /spec/template/spec/containers/0/resources/limits/memory
-#         value: 4Gi
-#   - target:
-#       kind: Deployment
-#       name: market
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 2
-#   - target:
-#       kind: Deployment
-#       name: admin
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 2
-#   - target:
-#       kind: Deployment
-#       name: constructor
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 2
-#   - target:
-#       kind: Deployment
-#       name: botmother-celery-worker
-#     patch: |-
-#       - op: replace
-#         path: /spec/replicas
-#         value: 3
+patches:
+  - target:
+      kind: Deployment
+      name: botmother-web
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 1000m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 1Gi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 4000m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 4Gi
+  - target:
+      kind: Deployment
+      name: webhook
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 5
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 1000m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 1Gi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 4000m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 4Gi
+
+  - target:
+      kind: Deployment
+      name: market
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+  - target:
+      kind: Deployment
+      name: admin
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+  - target:
+      kind: Deployment
+      name: constructor
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2

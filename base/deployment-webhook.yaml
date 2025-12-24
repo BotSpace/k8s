@@ -37,7 +37,7 @@ spec:
             - configMapRef:
                 name: webhook-config
             - secretRef:
-                name: webhook-redis-secret
+                name: webhook-secret
           resources:
             requests:
               cpu: 500m
