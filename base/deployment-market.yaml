@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: market
-          image: registry.jscorp.uz/botmother-market:1.0.0-prod # {"$imagepolicy": "flux-system:market"}
+          image: registry.jscorp.uz/botmother-market:1.0.1-prod # {"$imagepolicy": "flux-system:market"}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
