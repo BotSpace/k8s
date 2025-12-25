@@ -16,8 +16,6 @@ spec:
       author:
         name: flux-bot
         email: flux@local
-      messageTemplate: |
-        chore: update images to {{range .UpdatedDetails}}{{.NewImage}}{{end}}
     push:
       branch: main
   update:
