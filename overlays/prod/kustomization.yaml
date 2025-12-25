@@ -13,7 +13,7 @@ labels:
 
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: "1.0.2-prod"
+    newTag: "1.0.2-prod" # {"$imagepolicy": "flux-system:backend"}
   - name: registry.jscorp.uz/botmother-sales
     newTag: latest
   - name: jscorptech/botmother-admin
