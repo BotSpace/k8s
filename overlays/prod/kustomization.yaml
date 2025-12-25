@@ -7,19 +7,6 @@ labels:
   - pairs:
       environment: production
       app.kubernetes.io/env: prod
-images:
-  - name: registry.jscorp.uz/botmother
-    newTag: "1.0.2-prod"
-  - name: registry.jscorp.uz/botmother-sales
-    newTag: latest
-  - name: jscorptech/botmother-admin
-    newTag: "1.0.0-dev"
-  - name: registry.jscorp.uz/botmother-constructor
-    newTag: "1.0.0-dev"
-  - name: registry.jscorp.uz/botmother-webhook-service
-    newTag: latest
-  - name: nginx
-    newTag: 1.27-alpine
 configMapGenerator:
   - name: env-config
     literals:
@@ -32,9 +19,6 @@ patches:
       kind: Deployment
       name: botmother-web
     patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/image
-        value: registry.jscorp.uz/botmother:latest # {"$imagepolicy": "flux-system:backend"}
       - op: replace
         path: /spec/replicas
         value: 2
