@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - gotk-components.yaml
   - gotk-sync.yaml
-  - image-repository.yaml
-  - image-policy.yaml
-  - image-update.yaml
-  - prod-kustomization.yaml
+  - backend.yaml
+  - market.yaml
+  - admin.yaml
+  - constructor.yaml
