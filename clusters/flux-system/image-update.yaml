@@ -17,7 +17,7 @@ spec:
         name: flux-bot
         email: flux@local
       messageTemplate: |
-        chore: update webhook image to {{range .Updated.Images}}{{.NewTag}}{{end}}
+        chore: update images to {{range .UpdatedDetails}}{{.NewImage}}{{end}}
     push:
       branch: main
   update:
