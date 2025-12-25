@@ -26,6 +26,8 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
     spec:
+      nodeSelector:
+        name: base
       containers:
         - name: web
           image: registry.jscorp.uz/botmother:1.0.15-prod # {"$imagepolicy": "flux-system:backend"}
