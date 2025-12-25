@@ -6,7 +6,7 @@ metadata:
   labels:
     app: market
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: market
@@ -36,11 +36,11 @@ spec:
                 name: market-config
           resources:
             requests:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 1000m
+              memory: 1Gi
             limits:
-              cpu: 2000m
-              memory: 2Gi
+              cpu: 3000m
+              memory: 3Gi
       imagePullSecrets:
         - name: botmother-registry
 ---
