@@ -6,9 +6,9 @@ metadata:
 spec:
   imageRepositoryRef:
     name: backend
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
   policy:
     semver:
       range: ">=1.0.0"
-      tagFilter:
-        pattern: "^(?P<version>.*)-dev$"
-        extract: "$version"
