@@ -1,19 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: botmother
-
 resources:
   - ../../base
-
 labels:
   - pairs:
       environment: production
       app.kubernetes.io/env: prod
-
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: "1.0.2-prod" # {"$imagepolicy": "flux-system:backend"}
+    newTag: "registry.jscorp.uz/botmother:1.0.8-prod" # {"$imagepolicy": "flux-system:backend"}
   - name: registry.jscorp.uz/botmother-sales
     newTag: latest
   - name: jscorptech/botmother-admin
@@ -24,7 +20,6 @@ images:
     newTag: latest
   - name: nginx
     newTag: 1.27-alpine
-
 configMapGenerator:
   - name: env-config
     literals:
@@ -81,7 +76,6 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/memory
         value: 4Gi
-
   - target:
       kind: Deployment
       name: market
