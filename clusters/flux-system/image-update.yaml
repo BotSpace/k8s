@@ -19,5 +19,5 @@ spec:
     push:
       branch: main
   update:
-    path: ./overlays/prod
+    path: ./base
     strategy: Setters
