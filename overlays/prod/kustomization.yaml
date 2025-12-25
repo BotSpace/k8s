@@ -13,7 +13,6 @@ configMapGenerator:
       - ENVIRONMENT=production
       - DEBUG=false
       - LOG_LEVEL=INFO
-#
 patches:
   - target:
       kind: Deployment
