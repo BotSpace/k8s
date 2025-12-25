@@ -21,6 +21,3 @@ labels:
   - pairs:
       app.kubernetes.io/managed-by: kustomize
       app.kubernetes.io/part-of: botmother
-
-buildMetadata:
-  - managedByLabel
