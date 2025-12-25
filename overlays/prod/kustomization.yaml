@@ -13,7 +13,7 @@ labels:
 
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: "1.0.0-dev"
+    newTag: "1.0.2-dev"
   - name: registry.jscorp.uz/botmother-sales
     newTag: latest
   - name: jscorptech/botmother-admin
@@ -52,6 +52,16 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/memory
         value: 4Gi
+  - target:
+      kind: Deployment
+      name: botmother-celery-worker
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 1000m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 5000m
   - target:
       kind: Deployment
       name: webhook
