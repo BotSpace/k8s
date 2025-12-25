@@ -6,3 +6,5 @@ resources:
   - image-repository.yaml
   - image-policy.yaml
   - image-update.yaml
+  - prod-kustomization.yaml
+  - dev-kustomization.yaml
