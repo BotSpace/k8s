@@ -6,3 +6,5 @@ metadata:
 spec:
   image: registry.jscorp.uz/botmother
   interval: 1m
+  secretRef:
+    name: registry-secret
