@@ -9,7 +9,7 @@ labels:
       app.kubernetes.io/env: prod
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: "registry.jscorp.uz/botmother:1.0.8-prod" # {"$imagepolicy": "flux-system:backend"}
+    newTag: "1.0.2-prod"
   - name: registry.jscorp.uz/botmother-sales
     newTag: latest
   - name: jscorptech/botmother-admin
@@ -32,6 +32,9 @@ patches:
       kind: Deployment
       name: botmother-web
     patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: registry.jscorp.uz/botmother:latest # {"$imagepolicy": "flux-system:backend"}
       - op: replace
         path: /spec/replicas
         value: 2
