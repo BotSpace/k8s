@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: admin
-          image: jscorptech/botmother-admin:latest
+          image: jscorptech/botmother-admin:latest # {"$imagepolicy": "flux-system:admin"}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
