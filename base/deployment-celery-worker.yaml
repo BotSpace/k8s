@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: celery-worker
-          image: registry.jscorp.uz/botmother:latest
+          image: registry.jscorp.uz/botmother:latest # {"$imagepolicy": "flux-system:backend"}
           imagePullPolicy: Always
           command: ["sh", "./resources/scripts/celery-worker.sh"]
           envFrom:
