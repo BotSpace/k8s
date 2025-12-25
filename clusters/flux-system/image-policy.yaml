@@ -7,7 +7,7 @@ spec:
   imageRepositoryRef:
     name: backend
   filterTags:
-    pattern: "^(?P<version>.*)-dev$"
+    pattern: "^(?P<version>.*)-prod$"
     extract: "$version"
   policy:
     semver:
