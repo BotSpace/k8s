@@ -11,38 +11,78 @@ labels:
       environment: development
       app.kubernetes.io/env: dev
 
+images:
+  - name: registry.jscorp.uz/botmother
+    newTag: "2.0.3-dev"
+
+configMapGenerator:
+  - name: k8s
+    literals:
+      - K8S_NAMESPACE=botmother-dev
+
 patches:
   - target:
-      kind: Service
-      name: botmother-nginx
-    patch: |-
-      - op: replace
-        path: /spec/ports/0/nodePort
-        value: 30084
-  - target:
       kind: Deployment
+      name: botmother-web
     patch: |-
       - op: replace
         path: /spec/replicas
         value: 1
-
-images:
-  - name: registry.jscorp.uz/botmother
-    newTag: "1.0.0-dev"
-  - name: registry.jscorp.uz/botmother-sales
-    newTag: latest
-  - name: jscorptech/botmother-admin
-    newTag: latest
-  - name: jscorptech/botmother-constructor
-    newTag: latest
-  - name: registry.jscorp.uz/botmother-webhook-service
-    newTag: latest
-  - name: nginx
-    newTag: 1.27-alpine
-
-configMapGenerator:
-  - name: env-config
-    literals:
-      - ENVIRONMENT=development
-      - DEBUG=true
-      - LOG_LEVEL=DEBUG
+      - op: remove
+        path: /spec/template/spec/nodeSelector
+  - target:
+      kind: Deployment
+      name: market
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: constructor
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: admin
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Service
+      name: web
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 31002
+  - target:
+      kind: Service
+      name: market
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 31003
+  - target:
+      kind: Service
+      name: admin
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 31004
+  - target:
+      kind: Service
+      name: constructor
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 31005
+  - target:
+      kind: Service
+      name: webhook
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 31006
