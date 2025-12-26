@@ -27,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: webhook
-          image: registry.jscorp.uz/botmother-webhook-service:latest
+          image: registry.jscorp.uz/webhook:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
