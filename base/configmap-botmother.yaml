@@ -33,9 +33,6 @@ data:
   STORAGE_DEFAULT: "FILE"
   STORAGE_STATIC: "STATIC"
 
-  # Kubernetes config
-  K8S_NAMESPACE: "botmother"
-
   # Pricing
   RAM_PRICE: "1000"
   CPU_PRICE: "1000"

@@ -2,6 +2,7 @@
 *.secret.yaml
 *-secret.yaml
 secrets/
+secrets-dev/
 
 # Environment specific
 .env

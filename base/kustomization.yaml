@@ -5,9 +5,11 @@ namespace: botmother
 
 resources:
   - namespace.yaml
+  - serviceaccount.yaml
   - configmap-botmother.yaml
   - secret.yaml
   - pvc.yaml
+  - service.yaml
   - deployment-web.yaml
   - deployment-celery-worker.yaml
   - deployment-celery-beat.yaml
