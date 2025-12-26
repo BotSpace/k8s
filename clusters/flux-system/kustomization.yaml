@@ -7,3 +7,4 @@ resources:
   - market.yaml
   - admin.yaml
   - constructor.yaml
+  - webhook.yaml
