@@ -33,16 +33,16 @@ spec:
             - containerPort: 8080
               name: http
               protocol: TCP
-          env:
-            - name: NODE_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
           envFrom:
             - configMapRef:
                 name: webhook-config
             - secretRef:
                 name: webhook-secret
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           resources:
             requests:
               cpu: 500m
