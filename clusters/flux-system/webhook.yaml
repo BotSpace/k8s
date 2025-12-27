@@ -4,7 +4,7 @@ metadata:
   name: webhook
   namespace: flux-system
 spec:
-  image: registry.jscorp.uz/botmother-webhook
+  image: registry.jscorp.uz/webhook
   interval: 1m
   secretRef:
     name: registry-secret
