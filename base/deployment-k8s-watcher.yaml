@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botmother-k8s-watcher
+  namespace: botmother
+  labels:
+    app: botmother
+    component: k8s-watcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botmother
+      component: k8s-watcher
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: botmother
+        component: k8s-watcher
+    spec:
+      serviceAccountName: backend-sa
+      nodeSelector:
+        name: base
+      restartPolicy: Always
+      containers:
+        - name: k8s-watcher
+          image: registry.jscorp.uz/botmother:2.1.1-prod # {"$imagepolicy": "flux-system:backend"}
+          imagePullPolicy: Always
+          command:
+            - python
+            - manage.py
+            - watch_k8s_events
+            - --verbose
+          env:
+            - name: PYTHONPYCACHEPREFIX
+              value: "/var/cache/pycache"
+          envFrom:
+            - configMapRef:
+                name: k8s
+            - configMapRef:
+                name: botmother-config
+            - secretRef:
+                name: botmother-secret
+            - secretRef:
+                name: database-secret
+            - secretRef:
+                name: mongo-secret
+            - secretRef:
+                name: redis-secret
+            - secretRef:
+                name: django-secret
+            - secretRef:
+                name: click-secret
+            - secretRef:
+                name: bot-secret
+            - secretRef:
+                name: jwt-secret
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+            - name: engine-dir
+              mountPath: /mnt/engine
+              readOnly: false
+            - name: logs
+              mountPath: /code/resources/logs
+      imagePullSecrets:
+        - name: botmother-registry
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket
+        - name: engine-dir
+          hostPath:
+            path: /mnt/engine
+            type: DirectoryOrCreate
+        - name: logs
+          persistentVolumeClaim:
+            claimName: botmother-logs
