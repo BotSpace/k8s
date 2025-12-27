@@ -41,6 +41,10 @@ spec:
           env:
             - name: PYTHONPYCACHEPREFIX
               value: "/var/cache/pycache"
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           envFrom:
             - configMapRef:
                 name: k8s
