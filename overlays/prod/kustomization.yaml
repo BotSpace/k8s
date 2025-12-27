@@ -17,3 +17,12 @@ configMapGenerator:
       - ENVIRONMENT=production
       - DEBUG=false
       - LOG_LEVEL=INFO
+
+patches:
+  - target:
+      kind: Deployment
+      name: webhook
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
