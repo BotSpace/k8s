@@ -25,6 +25,7 @@ spec:
       annotations:
         prometheus.io/scrape: "false"
     spec:
+      serviceAccountName: backend-sa
       containers:
         - name: celery-worker
           image: registry.jscorp.uz/botmother:2.1.13-prod # {"$imagepolicy": "flux-system:backend"}
