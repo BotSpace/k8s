@@ -26,7 +26,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: k8s-watcher
-          image: registry.jscorp.uz/botmother:2.1.1-prod # {"$imagepolicy": "flux-system:backend"}
+          image: registry.jscorp.uz/botmother:2.1.11-prod # {"$imagepolicy": "flux-system:backend"}
           imagePullPolicy: Always
           command:
             - python
