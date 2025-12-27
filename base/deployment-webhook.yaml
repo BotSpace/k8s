@@ -38,11 +38,11 @@ spec:
                 name: webhook-config
             - secretRef:
                 name: webhook-secret
-          env:
-            - name: NODE_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+          # env:
+          #   - name: NODE_IP
+          #     valueFrom:
+          #       fieldRef:
+          #         fieldPath: status.hostIP
           resources:
             requests:
               cpu: 500m
