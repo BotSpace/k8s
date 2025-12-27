@@ -21,8 +21,6 @@ spec:
         component: k8s-watcher
     spec:
       serviceAccountName: backend-sa
-      nodeSelector:
-        name: base
       restartPolicy: Always
       containers:
         - name: k8s-watcher
