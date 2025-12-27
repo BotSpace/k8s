@@ -6,7 +6,7 @@ namespace: botmother
 resources:
   - namespace.yaml
   - serviceaccount.yaml
-  - redis-daemon.yaml
+  - daemonset-redis.yaml
   - configmap-botmother.yaml
   - secret.yaml
   - pvc.yaml
