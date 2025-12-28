@@ -25,11 +25,3 @@ spec:
             - name: redis
               containerPort: 6379
               hostPort: 6379
-          volumeMounts:
-            - name: redis-data
-              mountPath: /data
-      volumes:
-        - name: redis-data
-          hostPath:
-            path: /var/lib/redis
-            type: DirectoryOrCreate
