@@ -13,8 +13,6 @@ data:
 
     http {
         # UNCOMMENTED THIS SO NGINX DOES NOT CRASH ON "UNKNOWN ZONE"
-        limit_req_zone $binary_remote_addr zone=api_limit:10m rate=240r/m;
-        limit_req_status 429;
 
         sendfile on;
         tcp_nopush on;
@@ -28,18 +26,15 @@ data:
         gzip on;
 
         upstream api {
-            server 100.71.5.128:30002;
-            server 100.65.231.19:30002;
+            server web:8000;
         }
 
         upstream webhook {
-            server 100.71.5.128:30004;
-            server 100.65.231.19:30004;
+            server webhook:8080;
         }
 
         upstream frontend {
-            server 100.71.5.128:30001;
-            server 100.65.231.19:30001;
+            server admin:3000;
         }
 
         server {
@@ -47,7 +42,6 @@ data:
             listen [::]:80;
 
             server_name botlarnionasi.jscorp.uz api.botmother.uz api.botspace.uz;
-            limit_req zone=api_limit burst=30 nodelay;
 
             location / {
                 proxy_pass http://api;
