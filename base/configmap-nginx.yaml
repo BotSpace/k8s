@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: botmother
+data:
+  nginx.conf: |
+    worker_processes auto;
+
+    events {
+      worker_connections 10240;
+    }
+
+    http {
+        # limit_req_zone $binary_remote_addr zone=api_limit:10m rate=240r/m;
+        # limit_req_status 429;
+
+        sendfile on;
+        tcp_nopush on;
+        types_hash_max_size 2048;
+        client_max_body_size 1024M;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        access_log /var/log/nginx/access.log;
+        gzip on;
+
+        upstream api {
+            server 100.71.5.128:30002;
+            server 100.65.231.19:30002;
+        }
+
+        upstream webhook {
+            server 100.71.5.128:30004;
+            server 100.65.231.19:30004;
+        }
+
+        upstream frontend {
+            server 100.71.5.128:30001;
+            server 100.65.231.19:30001;
+        }
+
+        server {
+            listen 80;
+            listen [::]:80;
+
+            server_name botlarnionasi.jscorp.uz api.botmother.uz api.botspace.uz;
+            limit_req zone=api_limit burst=30 nodelay;
+
+            location / {
+                proxy_pass http://api;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto http;
+                proxy_set_header Host $host;
+            }
+
+            location /api/bot-webhook/ {
+                proxy_pass http://webhook;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto http;
+                proxy_set_header Host $host;
+            }
+
+            location /api/bot-router/ {
+                proxy_pass http://webhook;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto http;
+                proxy_set_header Host $host;
+            }
+
+            location /ws/ {
+                proxy_pass http://api;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_set_header Host $host;
+            }
+
+            location /sse/ {
+                proxy_pass http://api;
+                proxy_http_version 1.1;
+                proxy_buffering off;
+                proxy_cache off;
+                proxy_set_header Connection "";
+                proxy_set_header Host $host;
+                proxy_set_header X-Accel-Buffering no;
+                proxy_read_timeout 3600;
+                proxy_send_timeout 3600;
+                chunked_transfer_encoding off;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto http;
+            }
+        }
+
+        server {
+            listen 80;
+            listen [::]:80;
+            server_name beta.botmother.uz;
+
+            location / {
+                proxy_pass http://frontend;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto http;
+                proxy_set_header Host $host;
+            }
+        }
+
+        server {
+            listen 80;
+            listen [::]:80;
+            server_name botspace.uz;
+
+            location / {
+                proxy_pass http://frontend;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto http;
+                proxy_set_header Host $host;
+            }
+        }
+
+        server {
+            listen 80;
+            listen [::]:80;
+            server_name botmother.uz;
+
+            return 301 http://botspace.uz$request_uri;
+        }
+      }
+    }
