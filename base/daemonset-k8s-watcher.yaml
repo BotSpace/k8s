@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: botmother-k8s-watcher
   namespace: botmother
@@ -7,7 +7,6 @@ metadata:
     app: botmother
     component: k8s-watcher
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: botmother
@@ -61,10 +60,8 @@ spec:
               memory: 256Mi
             limits:
               cpu: 1000m
-              memory: 1Gi
+              memory: 2Gi
           volumeMounts:
-            - name: docker-sock
-              mountPath: /var/run/docker.sock
             - name: engine-dir
               mountPath: /mnt/engine
               readOnly: false
@@ -73,10 +70,6 @@ spec:
       imagePullSecrets:
         - name: botmother-registry
       volumes:
-        - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-            type: Socket
         - name: engine-dir
           hostPath:
             path: /mnt/engine
