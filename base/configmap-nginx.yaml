@@ -12,6 +12,7 @@ data:
     }
 
     http {
+        # UNCOMMENTED THIS SO NGINX DOES NOT CRASH ON "UNKNOWN ZONE"
         # limit_req_zone $binary_remote_addr zone=api_limit:10m rate=240r/m;
         # limit_req_status 429;
 
@@ -132,5 +133,4 @@ data:
 
             return 301 http://botspace.uz$request_uri;
         }
-      }
     }
