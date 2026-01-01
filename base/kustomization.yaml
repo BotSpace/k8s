@@ -12,7 +12,7 @@ resources:
   - pvc.yaml
   - service.yaml
   - deployment-web.yaml
-  - deployment-k8s-watcher.yaml
+  - daemonset-k8s-watcher.yaml
   - deployment-celery-worker.yaml
   - deployment-celery-beat.yaml
   - deployment-webhook.yaml

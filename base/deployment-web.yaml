@@ -80,8 +80,6 @@ spec:
               mountPath: /code/resources/staticfiles
             - name: logs
               mountPath: /code/resources/logs
-            - name: docker-sock
-              mountPath: /var/run/docker.sock
             - name: engine-dir
               mountPath: /mnt/engine
               readOnly: false
@@ -118,10 +116,6 @@ spec:
       imagePullSecrets:
         - name: botmother-registry
       volumes:
-        - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-            type: Socket
         - name: engine-dir
           hostPath:
             path: /mnt/engine
