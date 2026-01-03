@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: celery-beat
-          image: registry.jscorp.uz/botmother:2.2.3-prod # {"$imagepolicy": "flux-system:backend"}
+          image: registry.jscorp.uz/botmother:2.2.4-prod # {"$imagepolicy": "flux-system:backend"}
           imagePullPolicy: Always
           command: ["sh", "./resources/scripts/celery-beat.sh"]
           envFrom:
