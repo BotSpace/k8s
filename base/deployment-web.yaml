@@ -31,7 +31,7 @@ spec:
         name: base
       containers:
         - name: web
-          image: registry.jscorp.uz/botmother:2.2.18-prod # {"$imagepolicy": "flux-system:backend"}
+          image: registry.jscorp.uz/botmother:2.2.21-prod # {"$imagepolicy": "flux-system:backend"}
           imagePullPolicy: Always
           command: ["sh", "./resources/scripts/entrypoint-server.sh"]
           ports:
