@@ -30,9 +30,6 @@ spec:
             - manage.py
             - watch_k8s_events
             - --verbose
-          env:
-            - name: PYTHONPYCACHEPREFIX
-              value: "/var/cache/pycache"
           envFrom:
             - configMapRef:
                 name: k8s
