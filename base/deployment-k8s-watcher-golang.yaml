@@ -57,17 +57,6 @@ spec:
                 secretKeyRef:
                   name: database-secret
                   key: DB_PASSWORD
-            # Redis
-            - name: REDIS_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: redis-secret
-                  key: REDIS_HOST
-            - name: REDIS_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: redis-secret
-                  key: REDIS_PORT
             # Kubernetes
             - name: K8S_NAMESPACE
               valueFrom:
