@@ -22,7 +22,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: k8s-watcher
-          image: registry.jscorp.uz/k8s-watcher:latest # {"$imagepolicy": "flux-system:k8s-watcher"}
+          image: registry.jscorp.uz/k8s-watcher:v1.0.4 # {"$imagepolicy": "flux-system:k8s-watcher"}
           imagePullPolicy: Always
           args:
             - "--namespace=botmother"
