@@ -1,4 +1,4 @@
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: k8s-watcher
@@ -9,7 +9,7 @@ spec:
   secretRef:
     name: registry-secret
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
 metadata:
   name: k8s-watcher
@@ -18,13 +18,13 @@ spec:
   imageRepositoryRef:
     name: k8s-watcher
   filterTags:
-    pattern: '^(?P<version>\d+\.\d+\.\d+)$'
+    pattern: '^v(?P<version>\d+\.\d+\.\d+)$'
     extract: "$version"
   policy:
     semver:
       range: ">=1.0.0"
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageUpdateAutomation
 metadata:
   name: k8s-watcher
