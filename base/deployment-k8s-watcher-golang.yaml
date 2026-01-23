@@ -30,6 +30,7 @@ spec:
             - "--namespace=botmother"
             - "--label-selector=app=botmother-engine"
             - "--timeout=300"
+            - "--verbose"
           env:
             # Database
             - name: DB_HOST
