@@ -59,9 +59,12 @@ data:
                 proxy_set_header Host $host;
             }
 
+            location /api/webhook-metrics {
+              return 301 /api/webhook-metrics/;
+            }
+
             location /api/webhook-metrics/ {
-                rewrite ^ /api/metrics/ break;
-                proxy_pass http://webhook;
+                proxy_pass http://webhook/api/metrics/;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto http;
