@@ -59,7 +59,7 @@ data:
                 proxy_set_header Host $host;
             }
 
-            location = /api/webhook-metrics/ {
+            location /api/webhook-metrics/ {
                 rewrite ^ /api/metrics/ break;
                 proxy_pass http://webhook;
                 proxy_set_header X-Real-IP $remote_addr;
