@@ -27,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: webhook
-          image: registry.jscorp.uz/webhook:2.0.4-prod # {"$imagepolicy": "flux-system:webhook"}
+          image: registry.jscorp.uz/webhook:2.0.5-prod # {"$imagepolicy": "flux-system:webhook"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
