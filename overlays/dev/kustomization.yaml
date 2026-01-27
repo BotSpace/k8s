@@ -94,3 +94,10 @@ patches:
       - op: replace
         path: /spec/ports/0/nodePort
         value: 31006
+  - target:
+      kind: Service
+      name: nginx
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 31080
