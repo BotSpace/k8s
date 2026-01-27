@@ -25,6 +25,21 @@ spec:
       range: ">=1.0.0"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: backend-dev
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: backend
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=1.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
   name: backend
@@ -48,6 +63,30 @@ spec:
     path: ./base
     strategy: Setters
 ---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageUpdateAutomation
+metadata:
+  name: backend-dev
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        name: flux-bot
+        email: flux@local
+    push:
+      branch: main
+  update:
+    path: ./overlays/dev
+    strategy: Setters
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -69,4 +108,27 @@ spec:
       kind: Deployment
       name: webhook
       namespace: botmother
+  timeout: 5m0s
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: botmother-dev
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./overlays/dev
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: botmother-web
+      namespace: botmother-dev
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: webhook
+      namespace: botmother-dev
   timeout: 5m0s
