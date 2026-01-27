@@ -13,15 +13,15 @@ labels:
 
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: "2.0.9-dev" # {"$imagepolicy": "flux-system:backend-dev"}
+    newTag: 2.0.9-dev # {"$imagepolicy": "flux-system:backend-dev:tag"}
   - name: registry.jscorp.uz/webhook
-    newTag: "1.0.1-dev" # {"$imagepolicy": "flux-system:webhook-dev"}
+    newTag: 1.0.1-dev # {"$imagepolicy": "flux-system:webhook-dev:tag"}
   - name: registry.jscorp.uz/botmother-constructor
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:constructor-dev"}
+    newTag: 1.0.0-dev # {"$imagepolicy": "flux-system:constructor-dev:tag"}
   - name: registry.jscorp.uz/botmother-market
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:market-dev"}
+    newTag: 1.0.0-dev # {"$imagepolicy": "flux-system:market-dev:tag"}
   - name: registry.jscorp.uz/botmother-admin
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:admin-dev"}
+    newTag: 1.0.0-dev # {"$imagepolicy": "flux-system:admin-dev:tag"}
 
 configMapGenerator:
   - name: k8s
