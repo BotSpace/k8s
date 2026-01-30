@@ -32,6 +32,17 @@ spec:
             - "--timeout=300"
             - "--verbose"
           env:
+            # redis
+            - name: REDIS_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: REDIS_ADDR
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: REDIS_PASSWORD
             # Database
             - name: DB_HOST
               valueFrom:
