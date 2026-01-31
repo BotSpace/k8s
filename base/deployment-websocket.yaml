@@ -40,7 +40,7 @@ spec:
             - name: PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
-                  name: jwt-secrets
+                  name: jwt-secret
                   key: PUBLIC_KEY
           resources:
             requests:
