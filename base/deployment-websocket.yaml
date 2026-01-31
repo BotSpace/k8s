@@ -37,11 +37,11 @@ spec:
             - secretRef:
                 name: redis-secret
           env:
-            - PUBLIC_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: jwt-secrets
-                    key: PUBLIC_KEY
+            - name: PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: PUBLIC_KEY
           resources:
             requests:
               cpu: 500m
