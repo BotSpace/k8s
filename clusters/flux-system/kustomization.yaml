@@ -8,3 +8,4 @@ resources:
   - admin.yaml
   - constructor.yaml
   - webhook.yaml
+  - websocket.yaml
