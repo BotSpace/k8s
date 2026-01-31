@@ -33,6 +33,10 @@ data:
             server webhook:8080;
         }
 
+        upstream websocket {
+            server websocket:8080;
+        }
+
         upstream frontend {
             server admin:3000;
         }
@@ -67,7 +71,6 @@ data:
                 proxy_set_header Host $host;
             }
 
-
             location /api/bot-router/ {
                 proxy_pass http://webhook;
                 proxy_set_header X-Real-IP $remote_addr;
@@ -77,7 +80,7 @@ data:
             }
 
             location /ws/ {
-                proxy_pass http://api;
+                proxy_pass http://websocket/ws/;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection "upgrade";
