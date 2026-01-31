@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket
+  namespace: botmother
+  labels:
+    app: websocket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: websocket
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: websocket
+          image: registry.jscorp.uz/websocket:latest # {"$imagepolicy": "flux-system:websocket"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: redis-secret
+          env:
+            - PUBLIC_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: jwt-secrets
+                    key: PUBLIC_KEY
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      imagePullSecrets:
+        - name: botmother-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocket
+  namespace: botmother
+  labels:
+    app: websocket
+spec:
+  type: ClusterIP
+  selector:
+    app: websocket
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
