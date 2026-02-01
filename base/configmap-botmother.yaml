@@ -21,11 +21,11 @@ data:
   # Cache configs (connection details for external Redis)
   CACHE_BACKEND: "django.core.cache.backends.redis.RedisCache"
   REDIS_PORT: "6379"
-  CACHE_ENABLED: "True"
+  CACHE_ENABLED: true
   CACHE_TIMEOUT: "120"
 
   # Vite settings
-  VITE_LIVE: "False"
+  VITE_LIVE: false
   VITE_PORT: "5173"
   VITE_HOST: "127.0.0.1"
 
