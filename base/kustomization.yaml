@@ -18,6 +18,7 @@ resources:
   - deployment-celery-beat.yaml
   - deployment-webhook.yaml
   - deployment-websocket.yaml
+  - deployment-auth.yaml
   - deployment-market.yaml
   - deployment-admin.yaml
   - deployment-constructor.yaml
