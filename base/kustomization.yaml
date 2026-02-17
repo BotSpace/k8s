@@ -23,8 +23,6 @@ resources:
   - deployment-admin.yaml
   - deployment-constructor.yaml
   - pdb.yaml
-  - nginx-ingress-controller.yaml
-  - configmap-nginx-ingress.yaml
   - ingress-rules.yaml
 
 labels:

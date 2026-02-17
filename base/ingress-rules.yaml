@@ -9,10 +9,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($request_uri ~* ^/api/v2/auth/(.*)$) {
-        rewrite ^/api/v2/auth/(.*)$ /api/auth/$1 break;
-      }
 spec:
   ingressClassName: nginx
   rules:
@@ -138,10 +134,12 @@ metadata:
   namespace: botmother
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/websocket-services: "websocket"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/connection-proxy-header: "upgrade"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_http_version 1.1;
 spec:
   ingressClassName: nginx
   rules:
@@ -184,13 +182,13 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
-    nginx.ingress.kubernetes.io/proxy-cache: "off"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header Connection "";
       proxy_set_header X-Accel-Buffering no;
       chunked_transfer_encoding off;
+      proxy_cache off;
 spec:
   ingressClassName: nginx
   rules:
@@ -263,7 +261,7 @@ metadata:
   namespace: botmother
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/permanent-redirect: "http://botspace.uz$request_uri"
+    nginx.ingress.kubernetes.io/temporal-redirect: "http://botspace.uz"
 spec:
   ingressClassName: nginx
   rules:
