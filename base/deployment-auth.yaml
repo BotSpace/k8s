@@ -34,6 +34,8 @@ spec:
               name: http
               protocol: TCP
           env:
+            - name: GIN_MODE
+              value: release
             - name: ADDR
               value: ":8080"
             - name: DATABASE_TYPE
