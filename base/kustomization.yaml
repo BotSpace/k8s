@@ -23,9 +23,9 @@ resources:
   - deployment-admin.yaml
   - deployment-constructor.yaml
   - pdb.yaml
-  - ingress.yaml
-  - configmap-nginx.yaml
-  - daemonset-nginx.yaml
+  - nginx-ingress-controller.yaml
+  - configmap-nginx-ingress.yaml
+  - ingress-rules.yaml
 
 labels:
   - pairs:

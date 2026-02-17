@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-ingress-config
+  namespace: botmother
+data:
+  proxy-read-timeout: "3600"
+  proxy-send-timeout: "3600"
+  proxy-connect-timeout: "3600"
+  client-max-body-size: "1024m"
+  proxy-body-size: "1024m"
+  enable-underscores-in-headers: "true"
+  use-forwarded-headers: "true"
