@@ -9,3 +9,4 @@ resources:
   - constructor.yaml
   - webhook.yaml
   - websocket.yaml
+  - auth.yaml
