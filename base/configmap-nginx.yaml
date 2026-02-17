@@ -42,7 +42,7 @@ data:
         }
 
         upstream auth {
-            server auth:8080
+            server auth:8080;
         }
 
         server {
@@ -52,7 +52,7 @@ data:
             server_name botlarnionasi.jscorp.uz api.botmother.uz api.botspace.uz;
 
             location /api/v2/auth/ {
-                rewrite ^/api/v2/auth/(.*)$ /api/auth/$1 break
+                rewrite ^/api/v2/auth/(.*)$ /api/auth/$1 break;
                 proxy_pass http://auth;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
