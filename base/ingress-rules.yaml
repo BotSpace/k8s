@@ -15,7 +15,7 @@ spec:
     - host: botlarnionasi.jscorp.uz
       http:
         paths:
-          - path: /api/v2/auth
+          - path: /api/v1/auth
             pathType: Prefix
             backend:
               service:
@@ -53,7 +53,7 @@ spec:
     - host: api.botmother.uz
       http:
         paths:
-          - path: /api/v2/auth
+          - path: /api/v1/auth
             pathType: Prefix
             backend:
               service:
@@ -91,7 +91,7 @@ spec:
     - host: api.botspace.uz
       http:
         paths:
-          - path: /api/v2/auth
+          - path: /api/v1/auth
             pathType: Prefix
             backend:
               service:
