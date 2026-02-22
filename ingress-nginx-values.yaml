@@ -7,6 +7,7 @@ controller:
     nodePorts:
       http: 30080
       https: 30443
+    externalTrafficPolicy: Local
   
   allowSnippetAnnotations: true
   
@@ -17,6 +18,9 @@ controller:
     proxy-send-timeout: "3600"
     proxy-connect-timeout: "3600"
     use-forwarded-headers: "true"
+    compute-full-forwarded-for: "true"
+    use-proxy-protocol: "false"
+    enable-real-ip: "true"
     enable-underscores-in-headers: "true"
   
   resources:
