@@ -1,16 +1,14 @@
 # Nginx Ingress Controller Helm values
 controller:
   replicaCount: 2
-  
+
   service:
     type: NodePort
     nodePorts:
       http: 30080
       https: 30443
     externalTrafficPolicy: Local
-  
-  allowSnippetAnnotations: true
-  
+
   config:
     client-max-body-size: "1024m"
     proxy-body-size: "1024m"
@@ -22,7 +20,7 @@ controller:
     use-proxy-protocol: "false"
     enable-real-ip: "true"
     enable-underscores-in-headers: "true"
-  
+
   resources:
     requests:
       cpu: 100m
