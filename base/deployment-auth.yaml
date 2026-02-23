@@ -27,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: auth
-          image: registry.jscorp.uz/auth:1.0.17-prod # {"$imagepolicy": "flux-system:auth"}
+          image: registry.jscorp.uz/auth:1.0.18-prod # {"$imagepolicy": "flux-system:auth"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
