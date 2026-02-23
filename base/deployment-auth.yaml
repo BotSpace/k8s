@@ -34,6 +34,11 @@ spec:
               name: http
               protocol: TCP
           env:
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: GOOGLE_CLIENT_ID
             - name: GIN_MODE
               value: release
             - name: ADDR
