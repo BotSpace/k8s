@@ -69,7 +69,7 @@ data:
   CONSTRUCTOR_URL: "http://constructor:30005"
   SALES_URL: "http://market:30003"
   NEXTAUTH_SECRET: "REMOVED_CREDENTIAL"
-  NEXTAUTH_URL: "https://botmother.uz"
+  NEXTAUTH_URL: "https://botspace.uz"
   PORT: "3000"
   NODE_ENV: "production"
 ---
