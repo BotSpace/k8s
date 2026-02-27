@@ -22,8 +22,11 @@ spec:
       labels:
         app: botmother
         component: agent
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
     spec:
-      serviceAccountName: backend-sa
+      terminationGracePeriodSeconds: 30
       containers:
         - name: agent
           image: registry.jscorp.uz/botmother-agent:latest # {"$imagepolicy": "flux-system:botmother-agent"}
@@ -32,13 +35,17 @@ spec:
             - containerPort: 8000
               name: http
               protocol: TCP
+          env:
+            - name: PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: PUBLIC_KEY
           envFrom:
             - configMapRef:
                 name: agent-config
             - secretRef:
                 name: agent-secret
-            - secretRef:
-                name: jwt-secret
           resources:
             requests:
               cpu: 500m
@@ -49,9 +56,6 @@ spec:
           volumeMounts:
             - name: agent-data
               mountPath: /app/data
-            - name: jwt-keys
-              mountPath: /app/keys
-              readOnly: true
           livenessProbe:
             httpGet:
               path: /health
@@ -85,12 +89,6 @@ spec:
         - name: agent-data
           persistentVolumeClaim:
             claimName: botmother-agent-data
-        - name: jwt-keys
-          secret:
-            secretName: jwt-keys
-            items:
-              - key: public.pem
-                path: public.pem
 ---
 apiVersion: v1
 kind: Service
@@ -130,7 +128,6 @@ metadata:
   namespace: botmother
 data:
   BOTMOTHER_MODEL: "gpt-4o"
-  JWT_PUBLIC_KEY_PATH: "/app/keys/public.pem"
   DATABASE_PATH: "/app/data/agent.db"
   ROOT_PATH: "/api/v1/agent"
 ---

@@ -10,3 +10,4 @@ resources:
   - webhook.yaml
   - websocket.yaml
   - auth.yaml
+  - agent.yaml
