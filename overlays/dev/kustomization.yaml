@@ -16,6 +16,8 @@ images:
     newTag: "2.0.9-dev"
   - name: registry.jscorp.uz/webhook
     newTag: "1.0.1-dev"
+  - name: registry.jscorp.uz/botmother-agent
+    newTag: "latest"
 
 configMapGenerator:
   - name: k8s

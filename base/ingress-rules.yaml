@@ -22,6 +22,13 @@ spec:
                 name: auth
                 port:
                   number: 8080
+          - path: /api/v1/agent
+            pathType: Prefix
+            backend:
+              service:
+                name: agent
+                port:
+                  number: 8000
           - path: /api/bot-webhook
             pathType: Prefix
             backend:
@@ -60,6 +67,13 @@ spec:
                 name: auth
                 port:
                   number: 8080
+          - path: /api/v1/agent
+            pathType: Prefix
+            backend:
+              service:
+                name: agent
+                port:
+                  number: 8000
           - path: /api/bot-webhook
             pathType: Prefix
             backend:
@@ -98,6 +112,13 @@ spec:
                 name: auth
                 port:
                   number: 8080
+          - path: /api/v1/agent
+            pathType: Prefix
+            backend:
+              service:
+                name: agent
+                port:
+                  number: 8000
           - path: /api/bot-webhook
             pathType: Prefix
             backend:

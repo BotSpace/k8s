@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botmother-agent
+  namespace: botmother
+  labels:
+    app: botmother
+    component: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botmother
+      component: agent
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: botmother
+        component: agent
+    spec:
+      serviceAccountName: backend-sa
+      containers:
+        - name: agent
+          image: registry.jscorp.uz/botmother-agent:latest # {"$imagepolicy": "flux-system:botmother-agent"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: agent-config
+            - secretRef:
+                name: agent-secret
+            - secretRef:
+                name: jwt-secret
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          volumeMounts:
+            - name: agent-data
+              mountPath: /app/data
+            - name: jwt-keys
+              mountPath: /app/keys
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 12
+      imagePullSecrets:
+        - name: botmother-registry
+      volumes:
+        - name: agent-data
+          persistentVolumeClaim:
+            claimName: botmother-agent-data
+        - name: jwt-keys
+          secret:
+            secretName: jwt-keys
+            items:
+              - key: public.pem
+                path: public.pem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent
+  namespace: botmother
+  labels:
+    app: botmother
+    component: agent
+spec:
+  type: ClusterIP
+  selector:
+    app: botmother
+    component: agent
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: botmother-agent-data
+  namespace: botmother
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-config
+  namespace: botmother
+data:
+  BOTMOTHER_MODEL: "gpt-4o"
+  JWT_PUBLIC_KEY_PATH: "/app/keys/public.pem"
+  DATABASE_PATH: "/app/data/agent.db"
+  ROOT_PATH: "/api/v1/agent"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: agent-secret
+  namespace: botmother
+type: Opaque
+stringData:
+  OPENAI_API_KEY: "change-me"
+  OPENAI_API_BASE: "https://api.openai.com/v1"
