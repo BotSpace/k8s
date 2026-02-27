@@ -22,13 +22,6 @@ spec:
                 name: auth
                 port:
                   number: 8080
-          - path: /api/v1/agent
-            pathType: Prefix
-            backend:
-              service:
-                name: agent
-                port:
-                  number: 8000
           - path: /api/bot-webhook
             pathType: Prefix
             backend:
@@ -67,13 +60,6 @@ spec:
                 name: auth
                 port:
                   number: 8080
-          - path: /api/v1/agent
-            pathType: Prefix
-            backend:
-              service:
-                name: agent
-                port:
-                  number: 8000
           - path: /api/bot-webhook
             pathType: Prefix
             backend:
@@ -112,13 +98,6 @@ spec:
                 name: auth
                 port:
                   number: 8080
-          - path: /api/v1/agent
-            pathType: Prefix
-            backend:
-              service:
-                name: agent
-                port:
-                  number: 8000
           - path: /api/bot-webhook
             pathType: Prefix
             backend:
@@ -289,3 +268,48 @@ spec:
                 name: admin
                 port:
                   number: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: botmother-agent
+  namespace: botmother
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: botlarnionasi.jscorp.uz
+      http:
+        paths:
+          - path: /api/agent(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: agent
+                port:
+                  number: 8000
+    - host: api.botmother.uz
+      http:
+        paths:
+          - path: /api/agent(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: agent
+                port:
+                  number: 8000
+    - host: api.botspace.uz
+      http:
+        paths:
+          - path: /api/agent(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: agent
+                port:
+                  number: 8000
