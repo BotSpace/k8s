@@ -22,6 +22,7 @@ resources:
   - deployment-market.yaml
   - deployment-admin.yaml
   - deployment-constructor.yaml
+  - deployment-agent.yaml
   - pdb.yaml
   - ingress-rules.yaml
 
