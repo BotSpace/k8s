@@ -53,9 +53,6 @@ spec:
             limits:
               cpu: 2000m
               memory: 2Gi
-          volumeMounts:
-            - name: agent-data
-              mountPath: /app/data
           livenessProbe:
             httpGet:
               path: /health
@@ -85,10 +82,6 @@ spec:
             failureThreshold: 12
       imagePullSecrets:
         - name: botmother-registry
-      volumes:
-        - name: agent-data
-          persistentVolumeClaim:
-            claimName: botmother-agent-data
 ---
 apiVersion: v1
 kind: Service
@@ -110,25 +103,12 @@ spec:
       protocol: TCP
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: botmother-agent-data
-  namespace: botmother
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: agent-config
   namespace: botmother
 data:
   BOTMOTHER_MODEL: "gpt-4o"
-  DATABASE_PATH: "/app/data/agent.db"
 ---
 apiVersion: v1
 kind: Secret
@@ -139,3 +119,4 @@ type: Opaque
 stringData:
   OPENAI_API_KEY: "change-me"
   OPENAI_API_BASE: "https://api.openai.com/v1"
+  DATABASE_URL: "change-me"
