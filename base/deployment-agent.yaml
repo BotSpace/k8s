@@ -109,14 +109,3 @@ metadata:
   namespace: botmother
 data:
   BOTMOTHER_MODEL: "gpt-4o"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: agent-secret
-  namespace: botmother
-type: Opaque
-stringData:
-  OPENAI_API_KEY: "change-me"
-  OPENAI_API_BASE: "https://api.openai.com/v1"
-  DATABASE_URL: "change-me"
