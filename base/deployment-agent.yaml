@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: agent
-          image: registry.jscorp.uz/botmother-agent:1.1.2-prod # {"$imagepolicy": "flux-system:botmother-agent"}
+          image: registry.jscorp.uz/botmother-agent:1.1.3-prod # {"$imagepolicy": "flux-system:botmother-agent"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
