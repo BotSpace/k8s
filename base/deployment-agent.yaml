@@ -129,7 +129,6 @@ metadata:
 data:
   BOTMOTHER_MODEL: "gpt-4o"
   DATABASE_PATH: "/app/data/agent.db"
-  ROOT_PATH: "/api/v1/agent"
 ---
 apiVersion: v1
 kind: Secret
