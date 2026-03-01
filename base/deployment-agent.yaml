@@ -118,3 +118,4 @@ metadata:
   namespace: botmother
 data:
   BOTMOTHER_MODEL: "gpt-4o"
+  MAIN_API_URL: "https://api.botspace.uz"
