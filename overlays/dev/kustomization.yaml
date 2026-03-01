@@ -18,6 +18,8 @@ images:
     newTag: "1.0.1-dev"
   - name: registry.jscorp.uz/botmother-agent
     newTag: "latest"
+  - name: registry.jscorp.uz/engine-plugin
+    newTag: "1.0.0-dev"
 
 configMapGenerator:
   - name: k8s

@@ -313,3 +313,48 @@ spec:
                 name: agent
                 port:
                   number: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: botmother-engine-plugin
+  namespace: botmother
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /api/$2
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: botlarnionasi.jscorp.uz
+      http:
+        paths:
+          - path: /api/engine-plugin(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: engine-plugin
+                port:
+                  number: 8090
+    - host: api.botmother.uz
+      http:
+        paths:
+          - path: /api/engine-plugin(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: engine-plugin
+                port:
+                  number: 8090
+    - host: api.botspace.uz
+      http:
+        paths:
+          - path: /api/engine-plugin(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: engine-plugin
+                port:
+                  number: 8090

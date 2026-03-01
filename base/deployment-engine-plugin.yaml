@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: engine-plugin
+  namespace: botmother
+  labels:
+    app: engine-plugin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: engine-plugin
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: engine-plugin
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8090"
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: engine-plugin
+          image: registry.jscorp.uz/engine-plugin:1.0.0-prod # {"$imagepolicy": "flux-system:engine-plugin"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: engine-plugin-config
+            - secretRef:
+                name: engine-plugin-secret
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8090
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 12
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8090
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8090
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: botmother-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: engine-plugin
+  namespace: botmother
+  labels:
+    app: engine-plugin
+spec:
+  type: ClusterIP
+  selector:
+    app: engine-plugin
+  ports:
+    - name: http
+      port: 8090
+      targetPort: 8090
+      protocol: TCP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: engine-plugin-config
+  namespace: botmother
+data:
+  PORT: "8090"
+  LOG_LEVEL: "info"
+  MONGO_DB: "engine_plugins"
+  GIN_MODE: "release"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: engine-plugin-secret
+  namespace: botmother
+type: Opaque
+stringData:
+  MONGO_URI: "change-me"
+  API_KEY: "change-me"

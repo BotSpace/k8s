@@ -23,6 +23,7 @@ resources:
   - deployment-admin.yaml
   - deployment-constructor.yaml
   - deployment-agent.yaml
+  - deployment-engine-plugin.yaml
   - pdb.yaml
   - ingress-rules.yaml
 
