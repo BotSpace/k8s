@@ -9,6 +9,7 @@ resources:
   - daemonset-redis.yaml
   - configmap-botmother.yaml
   - secret.yaml
+  - ../secrets/google.yaml
   - pvc.yaml
   - service.yaml
   - deployment-web.yaml
