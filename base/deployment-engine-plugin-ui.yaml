@@ -35,10 +35,25 @@ spec:
               value: "botmother-plugin-ui-secret-2026"
             - name: NEXTAUTH_URL
               value: "https://plugins.botmother.uz"
-            - name: AUTH_API_URL
-              value: "https://api.botmother.uz/api/v1/auth"
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: GOOGLE_CLIENT_ID
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: GOOGLE_CLIENT_SECRET
+            - name: ALLOWED_EMAILS
+              value: "jscorptech@gmail.com"
             - name: NEXT_PUBLIC_API_URL
               value: "https://api.botmother.uz/api/engine-plugin"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: engine-plugin-secret
+                  key: API_KEY
           resources:
             requests:
               cpu: 50m
