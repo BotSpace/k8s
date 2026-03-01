@@ -30,6 +30,15 @@ spec:
             - containerPort: 3000
               name: http
               protocol: TCP
+          env:
+            - name: NEXTAUTH_SECRET
+              value: "botmother-plugin-ui-secret-2026"
+            - name: NEXTAUTH_URL
+              value: "https://plugins.botmother.uz"
+            - name: AUTH_API_URL
+              value: "https://api.botmother.uz/api/v1/auth"
+            - name: NEXT_PUBLIC_API_URL
+              value: "https://api.botmother.uz/api/engine-plugin"
           resources:
             requests:
               cpu: 50m
