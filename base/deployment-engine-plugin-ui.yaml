@@ -49,6 +49,8 @@ spec:
               value: "jscorptech@gmail.com"
             - name: NEXT_PUBLIC_API_URL
               value: "https://api.botmother.uz/api/engine-plugin"
+            - name: BACKEND_API_URL
+              value: "http://engine-plugin:8090/api"
             - name: API_KEY
               valueFrom:
                 secretKeyRef:
