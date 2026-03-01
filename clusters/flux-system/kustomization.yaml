@@ -11,3 +11,4 @@ resources:
   - websocket.yaml
   - auth.yaml
   - agent.yaml
+  - engine-plugin.yaml
