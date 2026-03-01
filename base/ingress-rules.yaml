@@ -358,3 +358,34 @@ spec:
                 name: engine-plugin
                 port:
                   number: 8090
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: botmother-engine-plugin-ui
+  namespace: botmother
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: plugins.botmother.uz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: engine-plugin-ui
+                port:
+                  number: 3000
+    - host: plugins.botspace.uz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: engine-plugin-ui
+                port:
+                  number: 3000
