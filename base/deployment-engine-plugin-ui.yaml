@@ -24,7 +24,7 @@ spec:
       terminationGracePeriodSeconds: 15
       containers:
         - name: engine-plugin-ui
-          image: registry.jscorp.uz/engine-plugin-ui:1.0.0-prod # {"$imagepolicy": "flux-system:engine-plugin-ui"}
+          image: registry.jscorp.uz/engine-plugin-ui:1.1.0-prod # {"$imagepolicy": "flux-system:engine-plugin-ui"}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
