@@ -38,6 +38,12 @@ spec:
                 name: engine-plugin-config
             - secretRef:
                 name: engine-plugin-secret
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_URL
           resources:
             requests:
               cpu: 100m
@@ -110,5 +116,4 @@ metadata:
   namespace: botmother
 type: Opaque
 stringData:
-  MONGO_URI: "change-me"
   API_KEY: "change-me"
