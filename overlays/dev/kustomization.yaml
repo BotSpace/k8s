@@ -20,6 +20,8 @@ images:
     newTag: "latest"
   - name: registry.jscorp.uz/engine-plugin
     newTag: "1.0.0-dev"
+  - name: registry.jscorp.uz/engine-plugin-ui
+    newTag: "1.0.0-dev"
 
 configMapGenerator:
   - name: k8s

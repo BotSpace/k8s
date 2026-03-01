@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: engine-plugin-ui
+  namespace: botmother
+  labels:
+    app: engine-plugin-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: engine-plugin-ui
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: engine-plugin-ui
+        component: frontend
+    spec:
+      terminationGracePeriodSeconds: 15
+      containers:
+        - name: engine-plugin-ui
+          image: registry.jscorp.uz/engine-plugin-ui:1.0.0-prod # {"$imagepolicy": "flux-system:engine-plugin-ui"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+      imagePullSecrets:
+        - name: botmother-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: engine-plugin-ui
+  namespace: botmother
+  labels:
+    app: engine-plugin-ui
+spec:
+  type: ClusterIP
+  selector:
+    app: engine-plugin-ui
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP

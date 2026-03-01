@@ -12,3 +12,4 @@ resources:
   - auth.yaml
   - agent.yaml
   - engine-plugin.yaml
+  - engine-plugin-ui.yaml
