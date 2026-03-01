@@ -44,6 +44,11 @@ spec:
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGO_URL
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: PUBLIC_KEY
           resources:
             requests:
               cpu: 100m
