@@ -1,6 +1,7 @@
 # Nginx Ingress Controller Helm values
 controller:
-  replicaCount: 2
+  kind: DaemonSet
+  # replicaCount: 2
 
   service:
     type: NodePort
