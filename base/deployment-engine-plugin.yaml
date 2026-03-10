@@ -25,6 +25,7 @@ spec:
         prometheus.io/port: "8090"
     spec:
       terminationGracePeriodSeconds: 30
+      serviceAccountName: backend-sa
       containers:
         - name: engine-plugin
           image: registry.jscorp.uz/engine-plugin:1.4.1-prod # {"$imagepolicy": "flux-system:engine-plugin"}
@@ -113,6 +114,7 @@ data:
   LOG_LEVEL: "info"
   MONGO_DB: "engine_plugins"
   GIN_MODE: "release"
+  K8S_NAMESPACE: "botmother"
 ---
 apiVersion: v1
 kind: Secret
