@@ -28,7 +28,7 @@ spec:
       serviceAccountName: backend-sa
       containers:
         - name: engine-plugin
-          image: registry.jscorp.uz/engine-plugin:1.5.0-prod # {"$imagepolicy": "flux-system:engine-plugin"}
+          image: registry.jscorp.uz/engine-plugin:1.5.1-prod # {"$imagepolicy": "flux-system:engine-plugin"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8090
