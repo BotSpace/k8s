@@ -34,7 +34,7 @@ spec:
                       - base
       containers:
         - name: constructor
-          image: registry.jscorp.uz/botmother-constructor:3.4.3-prod # {"$imagepolicy": "flux-system:constructor"}
+          image: registry.jscorp.uz/botmother-constructor:3.4.4-prod # {"$imagepolicy": "flux-system:constructor"}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
