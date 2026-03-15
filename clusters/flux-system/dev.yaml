@@ -48,6 +48,36 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
+  name: engine-plugin-dev
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: engine-plugin
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: engine-plugin-ui-dev
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: engine-plugin-ui
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
   name: admin-dev
   namespace: flux-system
 spec:
@@ -63,11 +93,56 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
+  name: market-dev
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: market
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: constructor-dev
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: constructor
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
   name: auth-dev
   namespace: flux-system
 spec:
   imageRepositoryRef:
     name: auth
+  filterTags:
+    pattern: "^(?P<version>.*)-dev$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: websocket-dev
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: websocket
   filterTags:
     pattern: "^(?P<version>.*)-dev$"
     extract: "$version"
