@@ -13,25 +13,25 @@ labels:
 
 images:
   - name: registry.jscorp.uz/botmother
-    newTag: "2.0.9-dev" # {"$imagepolicy": "flux-system:backend-dev:tag"}
+    newTag: "2.3.3-dev" # {"$imagepolicy": "flux-system:backend-dev:tag"}
   - name: registry.jscorp.uz/webhook
     newTag: "1.0.1-dev" # {"$imagepolicy": "flux-system:webhook-dev:tag"}
   - name: registry.jscorp.uz/botmother-agent
-    newTag: "2.0.1-dev" # {"$imagepolicy": "flux-system:botmother-agent-dev:tag"}
+    newTag: "2.0.2-dev" # {"$imagepolicy": "flux-system:botmother-agent-dev:tag"}
   - name: registry.jscorp.uz/engine-plugin
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:engine-plugin-dev:tag"}
+    newTag: "1.5.1-dev" # {"$imagepolicy": "flux-system:engine-plugin-dev:tag"}
   - name: registry.jscorp.uz/engine-plugin-ui
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:engine-plugin-ui-dev:tag"}
+    newTag: "1.4.3-dev" # {"$imagepolicy": "flux-system:engine-plugin-ui-dev:tag"}
   - name: registry.jscorp.uz/botmother-admin
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:admin-dev:tag"}
-  - name: registry.jscorp.uz/botmother-market
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:market-dev:tag"}
-  - name: registry.jscorp.uz/botmother-constructor
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:constructor-dev:tag"}
+    newTag: "2.1.9-dev" # {"$imagepolicy": "flux-system:admin-dev:tag"}
   - name: registry.jscorp.uz/auth
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:auth-dev:tag"}
+    newTag: "1.0.19-dev" # {"$imagepolicy": "flux-system:auth-dev:tag"}
+  - name: registry.jscorp.uz/botmother-market
+    newTag: "2.0.5-dev" # {"$imagepolicy": "flux-system:market-dev:tag"}
+  - name: registry.jscorp.uz/botmother-constructor
+    newTag: "3.4.4-dev" # {"$imagepolicy": "flux-system:constructor-dev:tag"}
   - name: registry.jscorp.uz/websocket
-    newTag: "1.0.0-dev" # {"$imagepolicy": "flux-system:websocket-dev:tag"}
+    newTag: "1.0.10-dev" # {"$imagepolicy": "flux-system:websocket-dev:tag"}
 
 configMapGenerator:
   - name: k8s
