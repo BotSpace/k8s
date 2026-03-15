@@ -14,8 +14,8 @@ resources:
   - deployment-web.yaml
   # - daemonset-k8s-watcher.yaml
   - deployment-k8s-watcher-golang.yaml
-  - deployment-celery-worker.yaml
-  - deployment-celery-beat.yaml
+  # - deployment-celery-worker.yaml
+  # - deployment-celery-beat.yaml
   - deployment-webhook.yaml
   - deployment-websocket.yaml
   - deployment-auth.yaml
