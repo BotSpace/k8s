@@ -1,16 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: botmother-dev
-
 resources:
   - ../../base
-
 labels:
   - pairs:
       environment: development
       app.kubernetes.io/env: dev
-
 images:
   - name: registry.jscorp.uz/botmother
     newTag: "2.3.3-dev" # {"$imagepolicy": "flux-system:backend-dev:tag"}
@@ -31,13 +27,11 @@ images:
   - name: registry.jscorp.uz/botmother-constructor
     newTag: "3.4.4-dev" # {"$imagepolicy": "flux-system:constructor-dev:tag"}
   - name: registry.jscorp.uz/websocket
-    newTag: "1.0.10-dev" # {"$imagepolicy": "flux-system:websocket-dev:tag"}
-
+    newTag: "1.0.11-dev" # {"$imagepolicy": "flux-system:websocket-dev:tag"}
 configMapGenerator:
   - name: k8s
     literals:
       - K8S_NAMESPACE=botmother-dev
-
 patches:
   - target:
       kind: Deployment
