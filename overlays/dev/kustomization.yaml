@@ -18,25 +18,10 @@ images:
     newTag: "1.0.1-dev" # {"$imagepolicy": "flux-system:webhook-dev:tag"}
   - name: registry.jscorp.uz/botmother-agent
     newTag: "2.0.2-dev" # {"$imagepolicy": "flux-system:botmother-agent-dev:tag"}
-  - name: registry.jscorp.uz/engine-plugin
-    # fallback to latest prod tag – no dev image yet; Flux will update this once a -dev tag is pushed
-    newTag: "1.5.1-prod" # {"$imagepolicy": "flux-system:engine-plugin-dev:tag"}
-  - name: registry.jscorp.uz/engine-plugin-ui
-    # fallback to latest prod tag – no dev image yet; Flux will update this once a -dev tag is pushed
-    newTag: "1.4.3-prod" # {"$imagepolicy": "flux-system:engine-plugin-ui-dev:tag"}
   - name: registry.jscorp.uz/botmother-admin
     newTag: "2.1.9-dev" # {"$imagepolicy": "flux-system:admin-dev:tag"}
-  - name: registry.jscorp.uz/botmother-market
-    # fallback to latest prod tag – no dev image yet; Flux will update this once a -dev tag is pushed
-    newTag: "2.0.5-prod" # {"$imagepolicy": "flux-system:market-dev:tag"}
-  - name: registry.jscorp.uz/botmother-constructor
-    # fallback to latest prod tag – no dev image yet; Flux will update this once a -dev tag is pushed
-    newTag: "3.4.4-prod" # {"$imagepolicy": "flux-system:constructor-dev:tag"}
   - name: registry.jscorp.uz/auth
     newTag: "1.0.19-dev" # {"$imagepolicy": "flux-system:auth-dev:tag"}
-  - name: registry.jscorp.uz/websocket
-    # fallback to latest prod tag – no dev image yet; Flux will update this once a -dev tag is pushed
-    newTag: "1.0.10-prod" # {"$imagepolicy": "flux-system:websocket-dev:tag"}
 
 configMapGenerator:
   - name: k8s
