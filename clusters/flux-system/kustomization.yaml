@@ -13,3 +13,4 @@ resources:
   - agent.yaml
   - engine-plugin.yaml
   - engine-plugin-ui.yaml
+  - dev.yaml
