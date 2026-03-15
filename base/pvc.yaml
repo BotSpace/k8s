@@ -5,7 +5,7 @@ metadata:
   namespace: botmother
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
@@ -18,7 +18,7 @@ metadata:
   namespace: botmother
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
@@ -31,8 +31,8 @@ metadata:
   namespace: botmother
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
-  storageClassName: nfs-client
+  storageClassName: longhorn
