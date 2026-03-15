@@ -169,8 +169,6 @@ spec:
       author:
         name: flux-bot
         email: flux@local
-      messageTemplate: |
-        Update dev image(s) to {{range .Changed.Images}}{{println .}}{{end}}
     push:
       branch: main
   update:
