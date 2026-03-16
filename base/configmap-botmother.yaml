@@ -9,7 +9,7 @@ data:
   DJANGO_SETTINGS_MODULE: "config.settings.production"
   PROJECT_ENV: "prod"
   PROTOCOL_HTTPS: "True"
-  SILK_ENABLED: "True"
+  SILK_ENABLED: "False"
 
   # OTP configs
   OTP_SIZE: "4"
