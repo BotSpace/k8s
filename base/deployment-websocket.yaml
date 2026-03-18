@@ -27,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: websocket
-          image: registry.jscorp.uz/websocket:1.0.10-prod # {"$imagepolicy": "flux-system:websocket"}
+          image: registry.jscorp.uz/websocket:1.0.12-prod # {"$imagepolicy": "flux-system:websocket"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
