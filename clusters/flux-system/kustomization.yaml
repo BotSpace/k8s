@@ -13,4 +13,5 @@ resources:
   - agent.yaml
   - engine-plugin.yaml
   - engine-plugin-ui.yaml
+  - k8s-watcher.yaml
   # - dev.yaml
