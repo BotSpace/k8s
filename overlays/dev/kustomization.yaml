@@ -32,6 +32,10 @@ configMapGenerator:
   - name: k8s
     literals:
       - K8S_NAMESPACE=botmother-dev
+  - name: agent-config
+    behavior: merge
+    literals:
+      - CORS_ORIGINS=https://dev.botspace.uz,https://dev.botmother.uz
 patches:
   - target:
       kind: Deployment
