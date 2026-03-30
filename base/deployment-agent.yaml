@@ -117,7 +117,7 @@ metadata:
   name: agent-config
   namespace: botmother
 data:
-  BOTMOTHER_MODEL: "gpt-4.1"
+  BOTMOTHER_MODEL: "us.anthropic.claude-haiku-4-5-20251001-v1:0"
   MAIN_API_URL: "https://api.botspace.uz"
   PLUGIN_API_URL: "https://api.botmother.uz/api/engine-plugin"
   REDIS_URL: "redis://main-redis:6379/0"
