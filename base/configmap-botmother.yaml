@@ -85,6 +85,7 @@ data:
   CONSTRUCTOR_URL: ""
   ADMIN_PANEL: ""
   NEXTAUTH_SECRET: "D$%^NEXTAUTH_SECRET=TIO*U(PI))OUY*NEXTAUTH_SECRET=^%"
+  NEXT_PUBLIC_AGENT_API: https://api.botspace.uz/api/agentv2
   MONO: "0"
   PORT: "3000"
   NODE_ENV: "production"
