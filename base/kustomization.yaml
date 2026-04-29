@@ -23,9 +23,11 @@ resources:
   - deployment-market.yaml
   - deployment-admin.yaml
   - deployment-constructor.yaml
-  - deployment-agent.yaml
   - deployment-engine-plugin.yaml
   - deployment-engine-plugin-ui.yaml
+  # Agentv2 manifests are staged for Flux migration. Add this resource when it
+  # should be deployed from this repo.
+  # - agentv2.yaml
   - pdb.yaml
   - ingress-rules.yaml
 
