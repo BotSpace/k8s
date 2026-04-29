@@ -272,51 +272,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: botmother-agent
-  namespace: botmother
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: botlarnionasi.jscorp.uz
-      http:
-        paths:
-          - path: /api/agent(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: agent
-                port:
-                  number: 8000
-    - host: api.botmother.uz
-      http:
-        paths:
-          - path: /api/agent(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: agent
-                port:
-                  number: 8000
-    - host: api.botspace.uz
-      http:
-        paths:
-          - path: /api/agent(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: agent
-                port:
-                  number: 8000
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: botmother-engine-plugin
   namespace: botmother
   annotations:
