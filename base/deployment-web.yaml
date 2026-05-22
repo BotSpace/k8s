@@ -55,7 +55,23 @@ spec:
         - name: web
           image: registry.iprogrammer.uz/botspace/botmother:2.4.9-prod # {"$imagepolicy": "flux-system:backend"}
           imagePullPolicy: Always
-          command: ["sh", "./resources/scripts/entrypoint-server.sh"]
+          # Pre-resolve the DB host before handing off to the entrypoint —
+          # single-replica CoreDNS sometimes returns EAI_AGAIN to glibc on
+          # the very first getaddrinfo during a rollout, and the entrypoint
+          # has `set -e` with no retry of its own.
+          command:
+            - sh
+            - -c
+            - |
+              for i in $(seq 1 15); do
+                if getent hosts cluster-rw.default.svc.cluster.local >/dev/null 2>&1; then
+                  echo "DNS ready after $i attempt(s)"
+                  break
+                fi
+                echo "[entrypoint] waiting for DNS ($i/15)..."
+                sleep 2
+              done
+              exec sh ./resources/scripts/entrypoint-server.sh
           ports:
             - containerPort: 8000
               name: http
