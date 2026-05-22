@@ -4,10 +4,10 @@ metadata:
   name: dashboard
   namespace: flux-system
 spec:
-  image: registry.irpgrammer.uz/botspace/dashboard
+  image: registry.iprogrammer.uz/botspace/dashboard
   interval: 1m
   secretRef:
-    name: irpgrammer-registry-secret
+    name: iprogrammer-registry-secret
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
