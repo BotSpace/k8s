@@ -4,10 +4,10 @@ metadata:
   name: backend
   namespace: flux-system
 spec:
-  image: registry.jscorp.uz/botmother
+  image: registry.iprogrammer.uz/botspace/botmother
   interval: 1m
   secretRef:
-    name: registry-secret
+    name: iprogrammer-registry-secret
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
