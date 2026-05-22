@@ -22,6 +22,7 @@ resources:
   - deployment-auth.yaml
   - deployment-market.yaml
   - deployment-admin.yaml
+  - deployment-dashboard.yaml
   - deployment-constructor.yaml
   - deployment-engine-plugin.yaml
   - deployment-engine-plugin-ui.yaml

@@ -81,14 +81,39 @@ metadata:
   namespace: botmother
 data:
   DEBUG: "false"
-  NEXT_PUBLIC_API: "https://botlarnionasi.jscorp.uz"
-  CONSTRUCTOR_URL: ""
-  ADMIN_PANEL: ""
-  NEXTAUTH_SECRET: "D$%^NEXTAUTH_SECRET=TIO*U(PI))OUY*NEXTAUTH_SECRET=^%"
-  NEXT_PUBLIC_AGENT_API: https://api.botspace.uz/api/agentv2
+  NEXT_PUBLIC_API: "https://api.botmother.uz"
+  CONSTRUCTOR_URL: "https://botspace.uz/constructor"
+  # ADMIN_PANEL kept for legacy references; new code reads DASHBOARD_URL.
+  ADMIN_PANEL: "https://botspace.uz"
+  DASHBOARD_URL: "https://botspace.uz"
+  NEXT_PUBLIC_AGENT_API: "https://api.botspace.uz/api/agentv2"
+  # Shared session — must match dashboard's SESSION_SECRET (provided via secret).
+  SESSION_COOKIE_NAME: "bm_session"
+  # MONO=0 → run under /constructor basePath. The ingress strips/proxies the
+  # /constructor prefix and Next.js serves under it.
   MONO: "0"
   PORT: "3000"
   NODE_ENV: "production"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-config
+  namespace: botmother
+data:
+  NODE_ENV: "production"
+  PORT: "3010"
+  # Backend & external services
+  NEXT_PUBLIC_API_URL: "https://api.botmother.uz"
+  NEXT_PUBLIC_AGENT_URL: "https://api.botmother.uz/api/agentv3"
+  # Constructor iframe target — same origin as the dashboard, served at
+  # /constructor by the same ingress.
+  NEXT_PUBLIC_CONSTRUCTOR_URL: "https://botspace.uz/constructor"
+  NEXT_PUBLIC_SITE_URL: "https://botspace.uz"
+  NEXT_PUBLIC_TELEGRAM_BOT: "botmother_authbot"
+  NEXT_PUBLIC_DEFAULT_LOCALE: "uz"
+  # Shared session — same cookie name across dashboard + constructor.
+  SESSION_COOKIE_NAME: "bm_session"
 ---
 apiVersion: v1
 kind: ConfigMap

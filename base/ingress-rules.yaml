@@ -216,6 +216,9 @@ spec:
                 port:
                   number: 8000
 ---
+# Dashboard (new) — served at root of botspace.uz, botmother.uz, beta.botmother.uz.
+# Constructor is served on the same origin under /constructor so the cookie is
+# shared (no third-party-cookie issues, no cross-origin iframe restrictions).
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -226,48 +229,57 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: beta.botmother.uz
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: admin
-                port:
-                  number: 3000
     - host: botspace.uz
       http:
         paths:
+          - path: /constructor
+            pathType: Prefix
+            backend:
+              service:
+                name: constructor
+                port:
+                  number: 3000
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: admin
+                name: dashboard
                 port:
-                  number: 3000
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: botmother-redirect
-  namespace: botmother
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/temporal-redirect: "http://botspace.uz"
-spec:
-  ingressClassName: nginx
-  rules:
+                  number: 3010
     - host: botmother.uz
       http:
         paths:
+          - path: /constructor
+            pathType: Prefix
+            backend:
+              service:
+                name: constructor
+                port:
+                  number: 3000
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: admin
+                name: dashboard
+                port:
+                  number: 3010
+    - host: beta.botmother.uz
+      http:
+        paths:
+          - path: /constructor
+            pathType: Prefix
+            backend:
+              service:
+                name: constructor
                 port:
                   number: 3000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard
+                port:
+                  number: 3010
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
