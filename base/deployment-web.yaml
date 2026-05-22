@@ -85,12 +85,16 @@ spec:
           env:
             - name: PYTHONPYCACHEPREFIX
               value: "/var/cache/pycache"
-            # `botmother-secret` (envFrom below) ships a stale ALLOWED_HOSTS
-            # that omits localhost / botspace.uz. An explicit env entry
-            # outranks envFrom, so wire the full list here until the secret
-            # is rotated.
+            # `botmother-secret` (envFrom below) ships stale ALLOWED_HOSTS /
+            # CSRF_TRUSTED_ORIGINS values that omit localhost and the
+            # botspace.uz domains. Explicit env entries outrank envFrom, so
+            # wire the full list here until the secret is rotated.
             - name: ALLOWED_HOSTS
               value: "localhost,api.botmother.uz,botmother.uz,beta.botmother.uz,api.botspace.uz,botspace.uz,plugins.botmother.uz,plugins.botspace.uz,botlarnionasi.jscorp.uz"
+            - name: CORS_ALLOWED_ORIGINS
+              value: "https://botspace.uz,https://botmother.uz,https://beta.botmother.uz,https://botlarnionasi.jscorp.uz,https://api.botspace.uz,https://api.botmother.uz"
+            - name: CSRF_TRUSTED_ORIGINS
+              value: "https://botspace.uz,https://botmother.uz,https://beta.botmother.uz,https://botlarnionasi.jscorp.uz,https://api.botspace.uz,https://api.botmother.uz"
             - name: NODE_IP
               valueFrom:
                 fieldRef:
