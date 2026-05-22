@@ -43,6 +43,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: constructor-config
+            - secretRef:
+                name: constructor-secret
           resources:
             requests:
               cpu: 1000m

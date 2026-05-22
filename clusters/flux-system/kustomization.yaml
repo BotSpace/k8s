@@ -6,6 +6,7 @@ resources:
   - backend.yaml
   - market.yaml
   - admin.yaml
+  - dashboard.yaml
   - constructor.yaml
   - webhook.yaml
   - websocket.yaml
