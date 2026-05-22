@@ -63,6 +63,12 @@ spec:
             - sh
             - -c
             - |
+              # CI bakes `.env.example` into the image as `.env` (see
+              # `cp .env.example .env` in deploy.yml), and django-environ's
+              # `read_env(".env")` overrides our configmap with dev defaults
+              # like `DJANGO_SETTINGS_MODULE=config.settings.local`,
+              # `DEBUG=True`, `ALLOWED_HOSTS=127.0.0.1,web`. Strip it.
+              rm -f /code/.env
               for i in $(seq 1 15); do
                 if getent hosts cluster-rw.default.svc.cluster.local >/dev/null 2>&1; then
                   echo "DNS ready after $i attempt(s)"
