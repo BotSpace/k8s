@@ -97,6 +97,11 @@ spec:
               path: /health/
               port: 8000
               scheme: HTTP
+              # kubelet probes use the pod IP — rewrite Host so Django's
+              # ALLOWED_HOSTS check accepts the request.
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 10
@@ -107,6 +112,9 @@ spec:
               path: /health/
               port: 8000
               scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -117,6 +125,9 @@ spec:
               path: /health/
               port: 8000
               scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 0
             periodSeconds: 10
             timeoutSeconds: 5

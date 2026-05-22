@@ -10,6 +10,9 @@ data:
   PROJECT_ENV: "prod"
   PROTOCOL_HTTPS: "True"
   SILK_ENABLED: "False"
+  # `localhost` is required because the kubelet probes hit the pod IP and we
+  # rewrite the Host header to `localhost` (see deployment-web.yaml).
+  ALLOWED_HOSTS: "localhost,api.botmother.uz,botmother.uz,beta.botmother.uz,api.botspace.uz,botspace.uz,plugins.botmother.uz,plugins.botspace.uz,botlarnionasi.jscorp.uz"
 
   # OTP configs
   OTP_SIZE: "4"
