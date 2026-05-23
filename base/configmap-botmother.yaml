@@ -121,6 +121,43 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: agentv3-config
+  namespace: botmother
+data:
+  AGENT_HOST: "0.0.0.0"
+  AGENT_PORT: "8100"
+  AGENT_LOG_LEVEL: "INFO"
+  AGENT_CORS_ORIGINS: "https://botspace.uz,https://botmother.uz,https://beta.botmother.uz"
+
+  # LLM routing — Bedrock via cross-region inference profiles.
+  AGENT_LLM_PROVIDER: "bedrock"
+  AGENT_MODEL_PLANNER: "claude-opus-4-7"
+  AGENT_MODEL_EXECUTOR: "claude-sonnet-4-6"
+  AGENT_MODEL_CRITIC: "claude-haiku-4-5"
+  AGENT_MODEL_EMBEDDING: "text-embedding-3-small"
+  AWS_REGION: "us-east-1"
+
+  # Budgets
+  AGENT_MAX_INPUT_TOKENS: "200000"
+  AGENT_MAX_OUTPUT_TOKENS: "16000"
+  AGENT_MAX_TOOL_CALLS: "80"
+  AGENT_MAX_WALL_SECONDS: "900"
+
+  # Internal services (cluster-internal DNS)
+  BACKEND_BASE_URL: "http://web:8000"
+  MONGO_BASE_URL: "mongodb://mongodb:27017"
+  MONGO_DB_PREFIX: "project_"
+  ENGINE_BASE_URL: "http://engine-plugin:8090"
+
+  # RAG (disabled by default)
+  AGENT_RAG_ENABLED: "false"
+  AGENT_RAG_TOP_K: "6"
+
+  JWT_ALGORITHM: "HS256"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: webhook-config
   namespace: botmother
 data:
