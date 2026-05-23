@@ -1,0 +1,27 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: botmother-engine-plugin
+  namespace: botmother
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: default
+  hostnames:
+    - api.botmother.uz
+    - api.botspace.uz
+    - botlarnionasi.jscorp.uz
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/engine-plugin
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api
+      backendRefs:
+        - name: engine-plugin
+          port: 8090
