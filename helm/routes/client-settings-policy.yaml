@@ -1,6 +1,19 @@
 apiVersion: gateway.nginx.org/v1alpha1
 kind: ClientSettingsPolicy
 metadata:
+  name: botmother-agent-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-agent
+  body:
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
   name: botmother-api-client-body
   namespace: botmother
 spec:
@@ -9,4 +22,82 @@ spec:
     kind: HTTPRoute
     name: botmother-api
   body:
-    maxSize: 100m
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: botmother-engine-plugin-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-engine-plugin
+  body:
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: botmother-engine-plugin-ui-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-engine-plugin-ui
+  body:
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: botmother-frontend-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-frontend
+  body:
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: botmother-mcp-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-mcp
+  body:
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: botmother-sse-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-sse
+  body:
+    maxSize: 200m
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: botmother-websocket-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: botmother-websocket
+  body:
+    maxSize: 200m
