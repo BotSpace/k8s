@@ -56,6 +56,13 @@ patches:
         value: 1
   - target:
       kind: Deployment
+      name: agentv3
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
       name: botmother-web
     patch: |-
       - op: replace

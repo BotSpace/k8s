@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agentv3
+  namespace: botmother
+  labels:
+    app: agentv3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agentv3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: agentv3
+        component: backend
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: name
+                    operator: NotIn
+                    values:
+                      - base
+      containers:
+        - name: agentv3
+          image: registry.iprogrammer.uz/botspace/agentv3:1.0.0-prod # {"$imagepolicy": "flux-system:agentv3"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8100
+              name: http
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: agentv3-config
+            - secretRef:
+                name: agentv3-secret
+            # Reuses the existing `agent-secret` (created for the legacy
+            # agentv1/agentv2 services) so we don't duplicate AWS credentials
+            # for Bedrock or ANTHROPIC_API_KEY. envFrom last wins, so anything
+            # explicit in agentv3-secret takes precedence over agent-secret.
+            - secretRef:
+                name: agent-secret
+                optional: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 384Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8100
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 24
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8100
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8100
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: iprogrammer-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agentv3
+  namespace: botmother
+  labels:
+    app: agentv3
+spec:
+  type: ClusterIP
+  selector:
+    app: agentv3
+  ports:
+    - name: http
+      port: 8100
+      targetPort: 8100
+      protocol: TCP

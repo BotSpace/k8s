@@ -8,6 +8,7 @@ resources:
   - admin.yaml
   - dashboard.yaml
   - constructor.yaml
+  - agentv3.yaml
   - webhook.yaml
   - websocket.yaml
   - auth.yaml
