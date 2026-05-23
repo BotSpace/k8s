@@ -27,7 +27,7 @@ env:
 
 storage:
   enabled: true
-  storageClassName: longhorn
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   size: 5Gi
