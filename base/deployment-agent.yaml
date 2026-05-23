@@ -34,7 +34,7 @@ spec:
                       - base
       containers:
         - name: agent
-          image: registry.iprogrammer.uz/botspace/agent:1.0.0-prod # {"$imagepolicy": "flux-system:agent"}
+          image: registry.iprogrammer.uz/botspace/agent:1.0.1-prod # {"$imagepolicy": "flux-system:agent"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8100
