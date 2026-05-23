@@ -282,9 +282,8 @@ spec:
                   number: 3010
 ---
 # LangGraph LLM orchestrator (`agent` service in cluster).
-# URL path stays `/api/agentv3` for backwards compatibility with the dashboard
-# config. The rewrite strips the prefix so FastAPI sees plain `/projects/...`.
-# SSE-friendly: buffering off, long read/send timeouts.
+# The rewrite strips the `/api/agent` prefix so FastAPI sees plain
+# `/projects/...`. SSE-friendly: buffering off, long read/send timeouts.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -304,7 +303,7 @@ spec:
     - host: api.botmother.uz
       http:
         paths:
-          - path: /api/agentv3(/|$)(.*)
+          - path: /api/agent(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
@@ -314,7 +313,7 @@ spec:
     - host: api.botspace.uz
       http:
         paths:
-          - path: /api/agentv3(/|$)(.*)
+          - path: /api/agent(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:

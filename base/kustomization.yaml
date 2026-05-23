@@ -26,7 +26,7 @@ resources:
   - deployment-constructor.yaml
   - deployment-engine-plugin.yaml
   - deployment-engine-plugin-ui.yaml
-  - postgres-agentv3.yaml
+  - postgres-agent.yaml
   - deployment-agent.yaml
   - pdb.yaml
   - ingress-rules.yaml
