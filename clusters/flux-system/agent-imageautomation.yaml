@@ -1,10 +1,10 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
-  name: agentv3
+  name: agent
   namespace: flux-system
 spec:
-  image: registry.iprogrammer.uz/botspace/agentv3
+  image: registry.iprogrammer.uz/botspace/agent
   interval: 1m
   secretRef:
     name: iprogrammer-registry-secret
@@ -12,11 +12,11 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
-  name: agentv3
+  name: agent
   namespace: flux-system
 spec:
   imageRepositoryRef:
-    name: agentv3
+    name: agent
   filterTags:
     pattern: "^(?P<version>.*)-prod$"
     extract: "$version"
@@ -27,7 +27,7 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
-  name: agentv3
+  name: agent
   namespace: flux-system
 spec:
   interval: 1m

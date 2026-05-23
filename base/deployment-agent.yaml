@@ -34,9 +34,7 @@ spec:
                       - base
       containers:
         - name: agent
-          # Image path keeps the historical `agentv3` name so it lines up with
-          # the source repo (BotSpace/agentv3) and the Harbor project.
-          image: registry.iprogrammer.uz/botspace/agentv3:1.0.0-prod # {"$imagepolicy": "flux-system:agentv3"}
+          image: registry.iprogrammer.uz/botspace/agent:1.0.0-prod # {"$imagepolicy": "flux-system:agent"}
           imagePullPolicy: Always
           ports:
             - containerPort: 8100
@@ -45,12 +43,14 @@ spec:
           envFrom:
             - configMapRef:
                 name: agent-config
+            # Runtime secrets owned by this deployment (SESSION_SECRET, DB URL,
+            # AGENT_INTERNAL_API_TOKEN). Kept distinct from the legacy
+            # `agent-secret` so we don't blow that away on changes.
             - secretRef:
-                name: agentv3-secret
-            # Reuses the existing `agent-secret` (created for the legacy
-            # agentv1/agentv2 services) so we don't duplicate AWS credentials
-            # for Bedrock or ANTHROPIC_API_KEY. envFrom last wins, so anything
-            # explicit in agentv3-secret takes precedence over agent-secret.
+                name: agent-runtime-secret
+            # Legacy `agent-secret` provides AWS_* for Bedrock (created back
+            # when agentv1/agentv2 were running). envFrom merge order means
+            # values from agent-runtime-secret take precedence on conflict.
             - secretRef:
                 name: agent-secret
                 optional: true

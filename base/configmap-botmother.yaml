@@ -108,7 +108,7 @@ data:
   PORT: "3010"
   # Backend & external services
   NEXT_PUBLIC_API_URL: "https://api.botmother.uz"
-  NEXT_PUBLIC_AGENT_URL: "https://api.botmother.uz/api/agentv3"
+  NEXT_PUBLIC_AGENT_URL: "https://api.botmother.uz/api/agent"
   # Constructor iframe target — same origin as the dashboard, served at
   # /constructor by the same ingress.
   NEXT_PUBLIC_CONSTRUCTOR_URL: "https://botspace.uz/constructor"
