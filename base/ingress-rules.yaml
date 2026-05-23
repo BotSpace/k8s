@@ -281,14 +281,14 @@ spec:
                 port:
                   number: 3010
 ---
-# AgentV3 — Python/FastAPI LangGraph orchestrator.
-# Path is rewritten so `/api/agentv3/projects/1/runs` → `/projects/1/runs`
-# (FastAPI app doesn't know about the prefix). SSE-friendly: buffering off,
-# long read/send timeouts.
+# LangGraph LLM orchestrator (`agent` service in cluster).
+# URL path stays `/api/agentv3` for backwards compatibility with the dashboard
+# config. The rewrite strips the prefix so FastAPI sees plain `/projects/...`.
+# SSE-friendly: buffering off, long read/send timeouts.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: botmother-agentv3
+  name: botmother-agent
   namespace: botmother
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -308,7 +308,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: agentv3
+                name: agent
                 port:
                   number: 8100
     - host: api.botspace.uz
@@ -318,7 +318,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: agentv3
+                name: agent
                 port:
                   number: 8100
 ---

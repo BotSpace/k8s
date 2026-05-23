@@ -56,7 +56,7 @@ patches:
         value: 1
   - target:
       kind: Deployment
-      name: agentv3
+      name: agent
     patch: |-
       - op: replace
         path: /spec/replicas

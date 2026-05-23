@@ -8,11 +8,10 @@ resources:
   - admin.yaml
   - dashboard.yaml
   - constructor.yaml
-  - agentv3.yaml
+  - agent-imageautomation.yaml
   - webhook.yaml
   - websocket.yaml
   - auth.yaml
-  - agent.yaml
   - engine-plugin.yaml
   - engine-plugin-ui.yaml
   - k8s-watcher.yaml

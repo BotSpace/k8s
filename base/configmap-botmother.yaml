@@ -121,7 +121,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: agentv3-config
+  name: agent-config
   namespace: botmother
 data:
   AGENT_HOST: "0.0.0.0"

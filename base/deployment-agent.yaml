@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: agentv3
+  name: agent
   namespace: botmother
   labels:
-    app: agentv3
+    app: agent
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: agentv3
+      app: agent
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: agentv3
+        app: agent
         component: backend
       annotations:
         prometheus.io/scrape: "false"
@@ -33,7 +33,9 @@ spec:
                     values:
                       - base
       containers:
-        - name: agentv3
+        - name: agent
+          # Image path keeps the historical `agentv3` name so it lines up with
+          # the source repo (BotSpace/agentv3) and the Harbor project.
           image: registry.iprogrammer.uz/botspace/agentv3:1.0.0-prod # {"$imagepolicy": "flux-system:agentv3"}
           imagePullPolicy: Always
           ports:
@@ -42,7 +44,7 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: agentv3-config
+                name: agent-config
             - secretRef:
                 name: agentv3-secret
             # Reuses the existing `agent-secret` (created for the legacy
@@ -89,14 +91,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: agentv3
+  name: agent
   namespace: botmother
   labels:
-    app: agentv3
+    app: agent
 spec:
   type: ClusterIP
   selector:
-    app: agentv3
+    app: agent
   ports:
     - name: http
       port: 8100
