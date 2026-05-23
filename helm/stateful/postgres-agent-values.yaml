@@ -1,0 +1,74 @@
+fullnameOverride: postgres-agent
+
+image:
+  repository: postgres
+  tag: "16-alpine"
+  pullPolicy: IfNotPresent
+
+workloadType: StatefulSet
+replicaCount: 1
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 5432
+  clusterIP: "None"
+
+env:
+  - name: POSTGRES_DB
+    value: agent
+  - name: POSTGRES_USER
+    value: agent
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: agent-runtime-secret
+        key: POSTGRES_PASSWORD
+  - name: PGDATA
+    value: /var/lib/postgresql/data/pgdata
+
+storage:
+  enabled: true
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  mountPath: /var/lib/postgresql/data
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+probes:
+  readiness:
+    enabled: true
+    exec:
+      command:
+        - pg_isready
+        - -U
+        - agent
+        - -d
+        - agent
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  liveness:
+    enabled: true
+    exec:
+      command:
+        - pg_isready
+    initialDelaySeconds: 30
+    periodSeconds: 30
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+                - base

@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: botmother
+  namespace: argocd
+spec:
+  description: Botmother platform services
+  sourceRepos:
+    - https://github.com/BotSpace/helm-charts.git
+    - https://github.com/BotSpace/backend.git
+    - https://github.com/BotSpace/admin-panel.git
+    - https://github.com/BotSpace/agent.git
+    - https://github.com/BotSpace/bot-constructor-panel.git
+    - https://github.com/BotSpace/dashboard.git
+    - https://github.com/BotSpace/marketplace.git
+    - https://github.com/BotSpace/auth.git
+    - https://github.com/BotSpace/k8s.git
+    - https://github.com/JscorpTech/engine-plugin.git
+    - https://github.com/JscorpTech/engine-plugin-ui.git
+    - https://github.com/JscorpTech/botmother-webhook-service.git
+    - https://github.com/JscorpTech/websocket-golang.git
+    - https://github.com/JscorpTech/k8s-watcher.git
+  destinations:
+    - namespace: botmother
+      server: https://kubernetes.default.svc
+    - namespace: botmother-dev
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

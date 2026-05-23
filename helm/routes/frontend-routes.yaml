@@ -1,0 +1,28 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: botmother-frontend
+  namespace: botmother
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: default
+  hostnames:
+    - botspace.uz
+    - botmother.uz
+    - beta.botmother.uz
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /constructor
+      backendRefs:
+        - name: constructor
+          port: 3000
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: dashboard
+          port: 3010

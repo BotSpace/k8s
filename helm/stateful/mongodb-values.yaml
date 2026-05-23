@@ -1,0 +1,48 @@
+fullnameOverride: mongodb
+
+image:
+  repository: mongo
+  tag: "7"
+  pullPolicy: IfNotPresent
+
+workloadType: Deployment
+replicaCount: 1
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 27017
+
+env:
+  - name: MONGO_INITDB_ROOT_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mongodb-secret
+        key: username
+  - name: MONGO_INITDB_ROOT_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mongodb-secret
+        key: password
+
+storage:
+  enabled: true
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  mountPath: /data/db
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+probes:
+  readiness:
+    enabled: false
+  liveness:
+    enabled: false

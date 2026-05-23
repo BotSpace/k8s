@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: botmother-infra
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: botmother
+spec:
+  project: botmother
+  sources:
+    - repoURL: https://github.com/BotSpace/k8s.git
+      targetRevision: main
+      path: helm/infra
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: botmother
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true

@@ -1,0 +1,31 @@
+fullnameOverride: main-redis
+
+image:
+  repository: redis
+  tag: "7"
+  pullPolicy: IfNotPresent
+
+workloadType: Deployment
+replicaCount: 1
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 6379
+
+storage:
+  enabled: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+probes:
+  readiness:
+    enabled: false
+  liveness:
+    enabled: false

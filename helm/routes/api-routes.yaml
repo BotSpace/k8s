@@ -1,0 +1,41 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: botmother-api
+  namespace: botmother
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: default
+  hostnames:
+    - api.botmother.uz
+    - api.botspace.uz
+    - botlarnionasi.jscorp.uz
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/v1/auth
+      backendRefs:
+        - name: auth
+          port: 8080
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/bot-webhook
+        - path:
+            type: PathPrefix
+            value: /api/webhook-metrics
+        - path:
+            type: PathPrefix
+            value: /api/bot-router
+      backendRefs:
+        - name: webhook
+          port: 8080
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: web
+          port: 8000
