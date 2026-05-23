@@ -34,7 +34,7 @@ spec:
                       - base
       containers:
         - name: dashboard
-          image: registry.iprogrammer.uz/botspace/dashboard:1.0.1-prod # {"$imagepolicy": "flux-system:dashboard"}
+          image: registry.iprogrammer.uz/botspace/dashboard:1.0.2-prod # {"$imagepolicy": "flux-system:dashboard"}
           imagePullPolicy: Always
           ports:
             - containerPort: 3010
