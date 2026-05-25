@@ -10,6 +10,7 @@ spec:
     - https://github.com/BotSpace/backend.git
     - https://github.com/BotSpace/admin-panel.git
     - https://github.com/BotSpace/agent.git
+    - https://github.com/BotSpace/agent-v4.git
     - https://github.com/BotSpace/bot-constructor-panel.git
     - https://github.com/BotSpace/dashboard.git
     - https://github.com/BotSpace/marketplace.git
