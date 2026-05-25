@@ -14,19 +14,6 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /api/agent/v4
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            path:
-              type: ReplacePrefixMatch
-              replacePrefixMatch: /
-      backendRefs:
-        - name: agent-v4
-          port: 8094
-    - matches:
-        - path:
-            type: PathPrefix
             value: /api/agent/v3
       filters:
         - type: URLRewrite
