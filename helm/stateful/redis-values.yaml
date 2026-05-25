@@ -1,0 +1,48 @@
+fullnameOverride: redis
+
+image:
+  repository: redis
+  tag: "7.4-alpine"
+  pullPolicy: IfNotPresent
+
+workloadType: StatefulSet
+replicaCount: 1
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 6379
+
+storage:
+  enabled: true
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  mountPath: /data
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+probes:
+  readiness:
+    enabled: true
+    exec:
+      command:
+        - redis-cli
+        - ping
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  liveness:
+    enabled: true
+    exec:
+      command:
+        - redis-cli
+        - ping
+    initialDelaySeconds: 15
+    periodSeconds: 20
