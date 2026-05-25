@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: botmother
+spec:
+  project: botmother
+  sources:
+    - repoURL: https://github.com/BotSpace/helm-charts.git
+      targetRevision: main
+      path: charts/botmother-stateful
+      helm:
+        valueFiles:
+          - $values/helm/stateful/redis-values.yaml
+    - repoURL: https://github.com/BotSpace/k8s.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: botmother
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
