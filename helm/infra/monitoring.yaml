@@ -1,3 +1,15 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Prometheus ServiceMonitors for the Botmother stack.
+#
+# All apps in the botmother namespace are deployed by the same Helm chart
+# (`botmother-app`), so the service for each app carries the label
+# `app.kubernetes.io/instance: <app-name>`. Each ServiceMonitor matches
+# its target by that instance label and scrapes the named port `http`.
+#
+# The kube-prometheus-stack Prometheus selects ServiceMonitors via the
+# label `release: monitoring` — all entries here have that label.
+# ─────────────────────────────────────────────────────────────────────────────
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -16,3 +28,120 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: agent
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: web
+  namespace: monitoring
+spec:
+  endpoints:
+    # django_prometheus exposes /metrics/ (trailing slash required by Django URL routing)
+    - interval: 30s
+      path: /metrics/
+      port: http
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: web
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: auth
+  namespace: monitoring
+spec:
+  endpoints:
+    - interval: 30s
+      path: /metrics
+      port: http
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: auth
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: webhook
+  namespace: monitoring
+spec:
+  endpoints:
+    # webhook uses a non-default path: /api/webhook-metrics/
+    - interval: 30s
+      path: /api/webhook-metrics/
+      port: http
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: webhook
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: websocket
+  namespace: monitoring
+spec:
+  endpoints:
+    # websocket uses /ws/metrics
+    - interval: 30s
+      path: /ws/metrics
+      port: http
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: websocket
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: engine-plugin
+  namespace: monitoring
+spec:
+  endpoints:
+    - interval: 30s
+      path: /metrics
+      port: http
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: engine-plugin
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: mcp-server
+  namespace: monitoring
+spec:
+  endpoints:
+    - interval: 30s
+      path: /metrics
+      port: http
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mcp-server
