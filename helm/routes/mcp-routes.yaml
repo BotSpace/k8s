@@ -10,12 +10,21 @@ spec:
   hostnames:
     - botspace.uz
   rules:
-    # MCP server agentv3 ichida /mcp path'da xizmat qiladi (Streamable HTTP),
+    # MCP server agent ichida /mcp path'da xizmat qiladi (Streamable HTTP),
     # shu sabab URLRewrite KERAK EMAS — prefix o'z holicha forward qilinadi.
     - matches:
         - path:
             type: PathPrefix
             value: /mcp
+      backendRefs:
+        - name: agent
+          port: 8100
+    # RFC 9728 OAuth discovery — MCP klientlar (Claude Code) 401'dan keyin shu
+    # metadata'ni o'qiydi. Agent o'zi serve qiladi.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known/oauth-protected-resource
       backendRefs:
         - name: agent
           port: 8100
