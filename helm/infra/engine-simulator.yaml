@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: engine-simulator
+  namespace: botmother
+  labels:
+    app: engine-simulator
+    app.kubernetes.io/part-of: botmother
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: engine-simulator
+  template:
+    metadata:
+      labels:
+        app: engine-simulator
+    spec:
+      imagePullSecrets:
+        - name: iprogrammer-registry
+      containers:
+        - name: engine-simulator
+          image: registry.iprogrammer.uz/botspace/golang-engine:3.5.23-prod
+          command: ["./simulator"]
+          ports:
+            - containerPort: 8200
+          env:
+            - name: SIMULATOR_ADDR
+              value: ":8200"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8200
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8200
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: engine-simulator
+  namespace: botmother
+  labels:
+    app: engine-simulator
+    app.kubernetes.io/part-of: botmother
+spec:
+  selector:
+    app: engine-simulator
+  ports:
+    - port: 8200
+      targetPort: 8200
+      protocol: TCP
