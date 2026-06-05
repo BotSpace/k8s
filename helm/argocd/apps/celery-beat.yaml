@@ -19,7 +19,7 @@ spec:
         # parallel ishlasa schedule ikki marta yuboriladi).
         values: |
           fullnameOverride: "celery-beat"
-          command: ["bash", "/code/resources/scripts/celery-beat.sh"]
+          command: ["sh", "/code/resources/scripts/celery-beat.sh"]
           replicaCount: 1
           podLabels:
             app: botmother

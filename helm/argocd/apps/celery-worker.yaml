@@ -17,7 +17,7 @@ spec:
         # web bilan bir xil image/env (backend repo values), faqat command boshqa.
         values: |
           fullnameOverride: "celery-worker"
-          command: ["bash", "/code/resources/scripts/celery-worker.sh"]
+          command: ["sh", "/code/resources/scripts/celery-worker.sh"]
           podLabels:
             app: botmother
             component: celery-worker
