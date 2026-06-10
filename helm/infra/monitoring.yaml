@@ -38,9 +38,10 @@ metadata:
   namespace: monitoring
 spec:
   endpoints:
-    # django_prometheus exposes /metrics/ (trailing slash required by Django URL routing)
+    # django_prometheus registers the view as `metrics` (NO trailing slash);
+    # `/metrics/` 404s and the target goes DOWN. Must be `/metrics`.
     - interval: 30s
-      path: /metrics/
+      path: /metrics
       port: http
   namespaceSelector:
     matchNames:

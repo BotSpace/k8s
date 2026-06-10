@@ -1,0 +1,97 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PrometheusRule — BotSpace stack uchun alert qoidalari.
+#
+# kube-prometheus-stack Prometheus'i `release: monitoring` yorlig'li
+# PrometheusRule'larni tanlaydi (ServiceMonitor'lar bilan bir xil). Hamma
+# expr'lar mavjud, real metrika nomlariga asoslangan:
+#   backend (web):  up, django_http_responses_total_by_status_total, botspace_*
+#   agent:          agent_runs_total, agent_run_duration_seconds, agent_llm_requests_total
+#   websocket:      active_connections
+#
+# Kubernetes/pod darajasidagi alertlar (CrashLoop, OOM, NodeDown) allaqachon
+# kube-prometheus-stack default qoidalarida bor — bu yerda faqat app-ga xos
+# biznes/SLO alertlari.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: botspace-app-rules
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    # ── Mavjudlik (availability) ──────────────────────────────────────────
+    - name: botspace-availability
+      rules:
+        - alert: BotSpaceTargetDown
+          expr: up{namespace="botmother"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "BotSpace target ishlamayapti: {{ $labels.job }}"
+            description: "{{ $labels.job }} ({{ $labels.pod }}) 5 daqiqadan beri scrape bo'lmayapti (up=0). Metrika kelmayapti yoki servis o'lik."
+
+    # ── Backend (Django / web) ────────────────────────────────────────────
+    - name: botspace-backend
+      rules:
+        - alert: BackendHigh5xxRate
+          expr: |
+            sum(rate(django_http_responses_total_by_status_total{status=~"5.."}[5m]))
+            /
+            sum(rate(django_http_responses_total_by_status_total[5m])) > 0.05
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Backend 5xx xatolar ko'p (>5%)"
+            description: "So'rovlarning {{ $value | humanizePercentage }} qismi 5xx qaytaryapti (oxirgi 10 daqiqa)."
+
+    # ── AI agent ──────────────────────────────────────────────────────────
+    - name: botspace-ai
+      rules:
+        - alert: AgentRunFailureRateHigh
+          expr: |
+            sum(rate(agent_runs_total{outcome="failed"}[15m]))
+            /
+            clamp_min(sum(rate(agent_runs_total[15m])), 0.001) > 0.3
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "AI run'lar ko'p fail bo'lyapti (>30%)"
+            description: "Agent run'larining {{ $value | humanizePercentage }} qismi fail bo'lyapti (oxirgi 15 daqiqa)."
+
+        - alert: AgentRunLatencyP95High
+          expr: histogram_quantile(0.95, sum(rate(agent_run_duration_seconds_bucket[10m])) by (le)) > 180
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "AI run'lar sekin (p95 > 3 daqiqa)"
+            description: "Agent run davomiyligining p95 qiymati {{ $value | humanizeDuration }}."
+
+        - alert: AgentLLMErrorRateHigh
+          expr: |
+            sum(rate(agent_llm_requests_total{outcome="error"}[10m]))
+            /
+            clamp_min(sum(rate(agent_llm_requests_total[10m])), 0.001) > 0.2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "LLM so'rovlari ko'p xato bermoqda (>20%)"
+            description: "LLM provayder so'rovlarining {{ $value | humanizePercentage }} qismi xato (oxirgi 10 daqiqa)."
+
+    # ── WebSocket ─────────────────────────────────────────────────────────
+    - name: botspace-websocket
+      rules:
+        - alert: WebSocketConnectionsHigh
+          expr: max(active_connections{namespace="botmother"}) > 5000
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "WebSocket ulanishlari juda ko'p (>5000)"
+            description: "Aktiv WebSocket ulanishlari: {{ $value }}. Resurs tugashi / leak / DoS belgisi bo'lishi mumkin."
