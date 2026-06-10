@@ -1,0 +1,25 @@
+# Grafana dashboard provisioning (kube-prometheus-stack sidecar).
+#
+# The Grafana sidecar (kiwigrid/k8s-sidecar) WATCHes every namespace for
+# ConfigMaps labelled `grafana_dashboard: "1"` and auto-imports the JSON
+# inside. configMapGenerator builds that ConfigMap straight from the JSON
+# file so the dashboard stays the single source of truth (no duplication).
+#
+# Apply:   kubectl apply -k k8s/grafana
+# Remove:  kubectl delete -k k8s/grafana
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monitoring
+
+generatorOptions:
+  # Keep a stable ConfigMap name (no content-hash suffix) so re-applies update
+  # the same object the sidecar already tracks.
+  disableNameSuffixHash: true
+  labels:
+    grafana_dashboard: "1"
+
+configMapGenerator:
+  - name: botspace-business-dashboard
+    files:
+      - botspace-business.json

@@ -1,0 +1,245 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "BotSpace biznes ko'rsatkichlari: ro'yxatdan o'tishlar, login/aktivlik, AI'dan foydalanish — vaqt bo'yicha. Manba: backend (botspace_*) va agent (agent_*) Prometheus metrikalari.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": false,
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": ["botspace", "business"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Datasource",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": { "from": "now-7d", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "BotSpace — Biznes ko'rsatkichlari",
+  "uid": "botspace-business",
+  "version": 1,
+  "weekStart": "",
+  "panels": [
+    {
+      "type": "row",
+      "title": "Umumiy (tanlangan davr)",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "panels": []
+    },
+    {
+      "type": "stat",
+      "title": "Yangi ro'yxatdan o'tishlar",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+      "id": 1,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } }, "overrides": [] },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(increase(botspace_user_registrations_total[$__range]))", "legendFormat": "ro'yxatdan o'tish", "refId": "A" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Login'lar",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+      "id": 2,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } }, "overrides": [] },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(increase(botspace_user_logins_total[$__range]))", "legendFormat": "login", "refId": "A" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "AI run'lari",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+      "id": 3,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] } }, "overrides": [] },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(increase(agent_runs_total[$__range]))", "legendFormat": "run", "refId": "A" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "AI tokenlar (jami)",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+      "id": 4,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] } }, "overrides": [] },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(increase(botspace_ai_tokens_total[$__range]))", "legendFormat": "token", "refId": "A" }
+      ]
+    },
+
+    {
+      "type": "row",
+      "title": "Foydalanuvchilar — vaqt bo'yicha",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Yangi ro'yxatdan o'tishlar (soatiga)",
+      "description": "Qaysi vaqtlarda ko'proq ro'yxatdan o'tishadi — cho'qqilar ko'rinadi.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "id": 5,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short", "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1, "stacking": { "mode": "none" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(increase(botspace_user_registrations_total[1h]))", "legendFormat": "ro'yxatdan o'tish / soat", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Login / aktivlik (soatiga)",
+      "description": "Aktiv foydalanuvchilarning vaqt taqsimoti (login soni proksi sifatida).",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "id": 6,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short", "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum by (method) (increase(botspace_user_logins_total[1h]))", "legendFormat": "{{method}}", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Login tezligi (rate, 5m)",
+      "description": "Joriy aktivlik darajasi.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 14 },
+      "id": 7,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 15, "lineWidth": 2, "spanNulls": true } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(rate(botspace_user_logins_total[5m]))", "legendFormat": "login/s", "refId": "A" }
+      ]
+    },
+
+    {
+      "type": "row",
+      "title": "AI'dan foydalanish",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 },
+      "id": 102,
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "AI run'lari (soatiga)",
+      "description": "AI'dan foydalanish qaysi vaqtda ko'p.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 22 },
+      "id": 8,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short", "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum(increase(agent_runs_total[1h]))", "legendFormat": "run / soat", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "AI tokenlar (rate, 5m)",
+      "description": "Kirish/chiqish tokenlar oqimi.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 22 },
+      "id": 9,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short", "custom": { "drawStyle": "line", "fillOpacity": 20, "lineWidth": 2, "stacking": { "mode": "normal" }, "spanNulls": true } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum by (kind) (rate(botspace_ai_tokens_total[5m]))", "legendFormat": "{{kind}}", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Agent run davomiyligi (p50 / p95)",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 30 },
+      "id": 10,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "s", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "spanNulls": true } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "histogram_quantile(0.50, sum(rate(agent_run_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p50", "refId": "A" },
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "histogram_quantile(0.95, sum(rate(agent_run_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p95", "refId": "B" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Agent run natijalari (outcome)",
+      "description": "completed / failed / cancelled.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 30 },
+      "id": 11,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short", "custom": { "drawStyle": "bars", "fillOpacity": 70, "lineWidth": 1, "stacking": { "mode": "normal" } } }, "overrides": [
+        { "matcher": { "id": "byName", "options": "failed" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }] },
+        { "matcher": { "id": "byName", "options": "completed" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } }] }
+      ] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum by (outcome) (increase(agent_runs_total[1h]))", "legendFormat": "{{outcome}}", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "LLM kirish tokenlari — kategoriya bo'yicha (rate)",
+      "description": "Token sarfi qayerga ketadi: system / tool_schema / user / tool_result / cache.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 38 },
+      "id": 12,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short", "custom": { "drawStyle": "line", "fillOpacity": 20, "lineWidth": 1, "stacking": { "mode": "normal" }, "spanNulls": true } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "sum by (category) (rate(agent_llm_input_tokens_total{category!=\"prompt_total\"}[5m]))", "legendFormat": "{{category}}", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Backend HTTP so'rovlar (view bo'yicha, rate)",
+      "description": "Umumiy platforma aktivligi / yuklama.",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 46 },
+      "id": 13,
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 1, "spanNulls": true } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "datasource": { "type": "prometheus", "uid": "${datasource}" }, "expr": "topk(10, sum by (view) (rate(django_http_requests_total_by_view_transport_method_total[5m])))", "legendFormat": "{{view}}", "refId": "A" }
+      ]
+    }
+  ]
+}
