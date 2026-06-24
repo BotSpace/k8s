@@ -36,6 +36,9 @@ spec:
         - path:
             type: PathPrefix
             value: /api/bot-router
+        - path:
+            type: PathPrefix
+            value: /api/hook
       backendRefs:
         - name: webhook
           port: 8080
