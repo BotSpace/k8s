@@ -23,3 +23,6 @@ configMapGenerator:
   - name: botspace-business-dashboard
     files:
       - botspace-business.json
+  - name: botspace-visits-dashboard
+    files:
+      - botspace-visits.json

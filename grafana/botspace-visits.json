@@ -1,0 +1,118 @@
+{
+  "uid": "botspace-visits",
+  "title": "BotSpace — Tashriflar (vaqt/kun/retention)",
+  "tags": ["botspace", "visits"],
+  "timezone": "Asia/Tashkent",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5m",
+  "time": { "from": "now-30d", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "type": "barchart",
+      "title": "Kirishlar — soat bo'yicha (qaysi vaqtda ko'p)",
+      "description": "accounts_loginlog: kun davomida qaysi soatlarda ko'proq kirishadi.",
+      "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "fieldConfig": { "defaults": { "color": { "mode": "continuous-BlPu" } }, "overrides": [] },
+      "options": { "xField": "soat", "legend": { "showLegend": false }, "tooltip": { "mode": "single" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT EXTRACT(HOUR FROM created_at)::int AS soat, COUNT(*) AS kirishlar FROM accounts_loginlog WHERE created_at >= $__timeFrom() AND created_at <= $__timeTo() GROUP BY 1 ORDER BY 1"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "barchart",
+      "title": "Kirishlar — hafta kuni bo'yicha (qaysi kunlari ko'p)",
+      "description": "accounts_loginlog: hafta kunlari bo'yicha kirishlar (Dushanba→Yakshanba).",
+      "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "fieldConfig": { "defaults": { "color": { "mode": "continuous-GrYlRd" } }, "overrides": [] },
+      "options": { "xField": "kun", "legend": { "showLegend": false }, "tooltip": { "mode": "single" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT trim(to_char(created_at, 'Day')) AS kun, COUNT(*) AS kirishlar FROM accounts_loginlog WHERE created_at >= $__timeFrom() AND created_at <= $__timeTo() GROUP BY trim(to_char(created_at, 'Day')), EXTRACT(ISODOW FROM created_at) ORDER BY EXTRACT(ISODOW FROM created_at)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Qaytish darajasi (retention %)",
+      "description": "Kamida 2 xil kunda kirgan foydalanuvchilar ulushi — bir marta kirgan odam yana qaytdimi.",
+      "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+      "gridPos": { "h": 9, "w": 8, "x": 0, "y": 9 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": 20 },
+            { "color": "green", "value": 40 }
+          ] }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "colorMode": "value", "graphMode": "none" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE d > 1) / NULLIF(COUNT(*), 0), 1) AS retention FROM (SELECT user_id, COUNT(DISTINCT created_at::date) AS d FROM accounts_loginlog GROUP BY user_id) t"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "piechart",
+      "title": "Qaytgan vs bir martalik foydalanuvchilar",
+      "description": "Kamida 2 xil kunda kirgan (qaytgan) va faqat 1 kun kirgan (bir martalik) foydalanuvchilar soni.",
+      "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+      "gridPos": { "h": 9, "w": 8, "x": 8, "y": 9 },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": true }, "pieType": "donut", "legend": { "displayMode": "list", "placement": "right", "showLegend": true } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) FILTER (WHERE d > 1) AS \"Qaytgan\", COUNT(*) FILTER (WHERE d = 1) AS \"Bir martalik\" FROM (SELECT user_id, COUNT(DISTINCT created_at::date) AS d FROM accounts_loginlog GROUP BY user_id) t"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Kunlik kirishlar (oxirgi 30 kun)",
+      "description": "Har kungi kirishlar soni — umumiy aktivlik trendi.",
+      "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 9 },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "bars", "fillOpacity": 40 } }, "overrides": [] },
+      "options": { "legend": { "showLegend": false }, "tooltip": { "mode": "single" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "postgres", "uid": "botspace-postgres" },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('day', created_at) AS time, COUNT(*) AS kirishlar FROM accounts_loginlog WHERE created_at >= $__timeFrom() AND created_at <= $__timeTo() GROUP BY 1 ORDER BY 1"
+        }
+      ]
+    }
+  ]
+}
