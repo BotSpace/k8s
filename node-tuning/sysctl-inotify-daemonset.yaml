@@ -1,0 +1,48 @@
+# Raises the node's inotify limits. The default fs.inotify.max_user_instances=128
+# is exhausted by concurrent pod-log "follow" streams (the debug-bot log viewer),
+# causing kubelet "failed to create fsnotify watcher: too many open files" and a
+# log-stream drop/reconnect loop. A privileged init enters the host mount/PID
+# namespace and bumps the limits; it re-applies on node reboot / new nodes.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sysctl-inotify
+  namespace: kube-system
+  labels:
+    app: sysctl-inotify
+spec:
+  selector:
+    matchLabels:
+      app: sysctl-inotify
+  template:
+    metadata:
+      labels:
+        app: sysctl-inotify
+    spec:
+      hostPID: true
+      tolerations:
+        - operator: Exists
+      initContainers:
+        - name: set-sysctl
+          image: busybox:1.36
+          securityContext:
+            privileged: true
+          command:
+            - nsenter
+            - "--target"
+            - "1"
+            - "--mount"
+            - "--"
+            - sh
+            - "-c"
+            - "sysctl -w fs.inotify.max_user_instances=1024 fs.inotify.max_user_watches=524288"
+      containers:
+        - name: pause
+          image: busybox:1.36
+          command: ["sh", "-c", "sleep infinity"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 4Mi
+            limits:
+              memory: 16Mi
