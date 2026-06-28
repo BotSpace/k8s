@@ -53,7 +53,7 @@
   "timezone": "Asia/Tashkent",
   "title": "BotSpace — Umumiy",
   "uid": "botspace-overview",
-  "version": 1,
+  "version": 2,
   "weekStart": "",
   "panels": [
     {
@@ -478,273 +478,13 @@
     },
     {
       "type": "row",
-      "title": "Tashriflar (login tarixi — soat / kun / retention)",
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 202,
-      "panels": []
-    },
-    {
-      "id": 8,
-      "type": "barchart",
-      "title": "Kirishlar — soat bo'yicha (qaysi vaqtda ko'p)",
-      "description": "accounts_loginlog: kun davomida qaysi soatlarda ko'proq kirishadi.",
-      "datasource": {
-        "type": "postgres",
-        "uid": "botspace-postgres"
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 22
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "xField": "soat",
-        "legend": {
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "botspace-postgres"
-          },
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT EXTRACT(HOUR FROM created_at)::int AS soat, COUNT(*) AS kirishlar FROM accounts_loginlog WHERE created_at >= $__timeFrom() AND created_at <= $__timeTo() GROUP BY 1 ORDER BY 1"
-        }
-      ]
-    },
-    {
-      "id": 9,
-      "type": "barchart",
-      "title": "Kirishlar — hafta kuni bo'yicha (qaysi kunlari ko'p)",
-      "description": "accounts_loginlog: hafta kunlari bo'yicha kirishlar (Dushanba→Yakshanba).",
-      "datasource": {
-        "type": "postgres",
-        "uid": "botspace-postgres"
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 22
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "xField": "kun",
-        "legend": {
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "botspace-postgres"
-          },
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT trim(to_char(created_at, 'Day')) AS kun, COUNT(*) AS kirishlar FROM accounts_loginlog WHERE created_at >= $__timeFrom() AND created_at <= $__timeTo() GROUP BY trim(to_char(created_at, 'Day')), EXTRACT(ISODOW FROM created_at) ORDER BY EXTRACT(ISODOW FROM created_at)"
-        }
-      ]
-    },
-    {
-      "id": 10,
-      "type": "stat",
-      "title": "Qaytish darajasi (retention %)",
-      "description": "Kamida 2 xil kunda kirgan foydalanuvchilar ulushi — bir marta kirgan odam yana qaytdimi.",
-      "datasource": {
-        "type": "postgres",
-        "uid": "botspace-postgres"
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 0,
-        "y": 31
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percent",
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 20
-              },
-              {
-                "color": "green",
-                "value": 40
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none"
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "botspace-postgres"
-          },
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE d > 1) / NULLIF(COUNT(*), 0), 1) AS retention FROM (SELECT user_id, COUNT(DISTINCT created_at::date) AS d FROM accounts_loginlog GROUP BY user_id) t"
-        }
-      ]
-    },
-    {
-      "id": 11,
-      "type": "piechart",
-      "title": "Qaytgan vs bir martalik foydalanuvchilar",
-      "description": "Kamida 2 xil kunda kirgan (qaytgan) va faqat 1 kun kirgan (bir martalik) foydalanuvchilar soni.",
-      "datasource": {
-        "type": "postgres",
-        "uid": "botspace-postgres"
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 8,
-        "y": 31
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "pieType": "donut",
-        "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "botspace-postgres"
-          },
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) FILTER (WHERE d > 1) AS \"Qaytgan\", COUNT(*) FILTER (WHERE d = 1) AS \"Bir martalik\" FROM (SELECT user_id, COUNT(DISTINCT created_at::date) AS d FROM accounts_loginlog GROUP BY user_id) t"
-        }
-      ]
-    },
-    {
-      "id": 12,
-      "type": "timeseries",
-      "title": "Kunlik kirishlar (oxirgi 30 kun)",
-      "description": "Har kungi kirishlar soni — umumiy aktivlik trendi.",
-      "datasource": {
-        "type": "postgres",
-        "uid": "botspace-postgres"
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 16,
-        "y": 31
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars",
-            "fillOpacity": 40
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "botspace-postgres"
-          },
-          "format": "time_series",
-          "rawQuery": true,
-          "rawSql": "SELECT date_trunc('day', created_at) AS time, COUNT(*) AS kirishlar FROM accounts_loginlog WHERE created_at >= $__timeFrom() AND created_at <= $__timeTo() GROUP BY 1 ORDER BY 1"
-        }
-      ]
-    },
-    {
-      "type": "row",
       "title": "AI'dan foydalanish",
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 21
       },
       "id": 203,
       "panels": []
@@ -761,7 +501,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 41
+        "y": 22
       },
       "id": 13,
       "fieldConfig": {
@@ -813,7 +553,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 41
+        "y": 22
       },
       "id": 14,
       "fieldConfig": {
@@ -871,7 +611,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 49
+        "y": 30
       },
       "id": 15,
       "fieldConfig": {
@@ -936,7 +676,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 49
+        "y": 30
       },
       "id": 16,
       "fieldConfig": {
@@ -1022,7 +762,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 38
       },
       "id": 17,
       "fieldConfig": {
@@ -1081,7 +821,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 46
       },
       "id": 18,
       "fieldConfig": {
@@ -1133,7 +873,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 54
       },
       "id": 204,
       "panels": []
@@ -1151,7 +891,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 74
+        "y": 55
       },
       "fieldConfig": {
         "defaults": {
@@ -1207,7 +947,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 74
+        "y": 55
       },
       "fieldConfig": {
         "defaults": {
@@ -1263,7 +1003,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 74
+        "y": 55
       },
       "fieldConfig": {
         "defaults": {
@@ -1308,7 +1048,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 82
+        "y": 63
       },
       "fieldConfig": {
         "defaults": {
@@ -1357,7 +1097,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 82
+        "y": 63
       },
       "fieldConfig": {
         "defaults": {
@@ -1397,7 +1137,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 90
+        "y": 71
       },
       "id": 205,
       "panels": []
@@ -1414,7 +1154,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 91
+        "y": 72
       },
       "options": {
         "reduceOptions": {
@@ -1472,7 +1212,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 91
+        "y": 72
       },
       "options": {
         "reduceOptions": {
@@ -1530,7 +1270,7 @@
         "h": 4,
         "w": 6,
         "x": 12,
-        "y": 91
+        "y": 72
       },
       "options": {
         "reduceOptions": {
@@ -1588,7 +1328,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 91
+        "y": 72
       },
       "options": {
         "reduceOptions": {
@@ -1647,7 +1387,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 95
+        "y": 76
       },
       "options": {
         "reduceOptions": {
@@ -1713,7 +1453,7 @@
         "h": 8,
         "w": 12,
         "x": 6,
-        "y": 95
+        "y": 76
       },
       "fieldConfig": {
         "defaults": {
@@ -1790,7 +1530,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 103
+        "y": 84
       },
       "fieldConfig": {
         "defaults": {
@@ -1849,7 +1589,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 103
+        "y": 84
       },
       "fieldConfig": {
         "defaults": {
@@ -1917,7 +1657,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 111
+        "y": 92
       },
       "fieldConfig": {
         "defaults": {
@@ -1976,7 +1716,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 111
+        "y": 92
       },
       "fieldConfig": {
         "defaults": {
