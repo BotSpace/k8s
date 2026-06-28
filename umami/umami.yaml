@@ -3,8 +3,8 @@
 # CREATEDB). Sirlar (DATABASE_URL, APP_SECRET) `umami` Secret'da — git'da EMAS,
 # kubectl bilan alohida yaratilgan.
 #
-# Tashqi kirish: host nginx umami.botspace.uz → 127.0.0.1:30007 (NodePort).
-# NodePort nftables guard'ga qo'shilgan (faqat localhost + cluster).
+# Tashqi kirish: nginx → main-gateway (Gateway API) → HTTPRoute → umami Service
+# (ClusterIP). NodePort YO'Q.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -67,11 +67,35 @@ metadata:
   labels:
     app: umami
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: umami
   ports:
     - name: http
       port: 3000
       targetPort: 3000
-      nodePort: 30007
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: umami
+  namespace: botmother
+spec:
+  hostnames:
+    - umami.botspace.uz
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: main-gateway
+      namespace: default
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: umami
+          port: 3000
+          weight: 1
