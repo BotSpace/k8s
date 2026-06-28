@@ -20,9 +20,9 @@ generatorOptions:
     grafana_dashboard: "1"
 
 configMapGenerator:
-  - name: botspace-business-dashboard
+  # Yagona birlashtirilgan dashboard — biznes + tashriflar + debug + AI +
+  # servislar (webhook/websocket). Eski botspace-business/botspace-visits
+  # shu yerga ko'chdi; ularning ConfigMap'lari clusterdan o'chiriladi.
+  - name: botspace-overview-dashboard
     files:
-      - botspace-business.json
-  - name: botspace-visits-dashboard
-    files:
-      - botspace-visits.json
+      - botspace-overview.json
