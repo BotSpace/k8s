@@ -1,0 +1,77 @@
+# Umami — self-hosted web/product analytics (botspace.uz + botspace.uz/app).
+# Mavjud host Postgres'dagi alohida `umami` DB'dan foydalanadi (botspace user,
+# CREATEDB). Sirlar (DATABASE_URL, APP_SECRET) `umami` Secret'da — git'da EMAS,
+# kubectl bilan alohida yaratilgan.
+#
+# Tashqi kirish: host nginx umami.botspace.uz → 127.0.0.1:30007 (NodePort).
+# NodePort nftables guard'ga qo'shilgan (faqat localhost + cluster).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: umami
+  namespace: botmother
+  labels:
+    app: umami
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: umami
+  template:
+    metadata:
+      labels:
+        app: umami
+    spec:
+      containers:
+        - name: umami
+          image: ghcr.io/umami-software/umami:postgresql-latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_TYPE
+              value: postgresql
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: umami
+                  key: DATABASE_URL
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: umami
+                  key: APP_SECRET
+          readinessProbe:
+            httpGet:
+              path: /api/heartbeat
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/heartbeat
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 192Mi
+            limits:
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: umami
+  namespace: botmother
+  labels:
+    app: umami
+spec:
+  type: NodePort
+  selector:
+    app: umami
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      nodePort: 30007
