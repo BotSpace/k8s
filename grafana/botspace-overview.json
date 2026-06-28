@@ -1635,6 +1635,73 @@
       "id": 27
     },
     {
+      "type": "stat",
+      "title": "Goroutine — hozir (webhook/websocket)",
+      "description": "Hozirgi aktiv goroutine soni, har servis bo'yicha (go_goroutines).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "id": 33,
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 95
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "textMode": "value_and_name",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "go_goroutines{namespace=\"botmother\", job=~\"webhook|websocket\"}",
+          "legendFormat": "{{job}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
       "type": "timeseries",
       "title": "Webhook so'rov tezligi (rate, 5m)",
       "description": "Webhook yuklamasi: jami / xato / e'tiborsiz so'rovlar oqimi.",
@@ -1645,7 +1712,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
+        "x": 6,
         "y": 95
       },
       "fieldConfig": {
@@ -1722,8 +1789,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 95
+        "x": 0,
+        "y": 103
       },
       "fieldConfig": {
         "defaults": {
@@ -1781,7 +1848,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 103
       },
       "fieldConfig": {
@@ -1840,8 +1907,8 @@
     },
     {
       "type": "timeseries",
-      "title": "Goroutine soni — Go servislar",
-      "description": "go_goroutines: webhook/websocket/engine-plugin/auth bo'yicha aktiv goroutine soni.",
+      "title": "Goroutine — webhook / websocket (vaqt bo'yicha)",
+      "description": "go_goroutines: webhook va websocket servislarining aktiv goroutine soni — vaqt bo'yicha.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -1849,8 +1916,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 103
+        "x": 0,
+        "y": 111
       },
       "fieldConfig": {
         "defaults": {
@@ -1890,7 +1957,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "go_goroutines{namespace=\"botmother\", job=~\"webhook|websocket|engine-plugin|auth\"}",
+          "expr": "go_goroutines{namespace=\"botmother\", job=~\"webhook|websocket\"}",
           "legendFormat": "{{job}}",
           "refId": "A"
         }
@@ -1908,7 +1975,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 111
       },
       "fieldConfig": {
