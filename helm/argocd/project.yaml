@@ -8,6 +8,7 @@ spec:
   sourceRepos:
     - https://github.com/BotSpace/helm-charts.git
     - https://github.com/BotSpace/backend.git
+    - https://github.com/BotSpace/worker-golang.git
     - https://github.com/BotSpace/admin-panel.git
     - https://github.com/BotSpace/agent.git
     - https://github.com/BotSpace/bot-constructor-panel.git
