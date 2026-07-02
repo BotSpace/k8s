@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: worker-golang
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: botmother
+spec:
+  project: botmother
+  sources:
+    - repoURL: https://github.com/BotSpace/helm-charts.git
+      targetRevision: main
+      path: charts/botmother-app
+      helm:
+        valueFiles:
+          - $values/helm/values.yaml
+        # Celery worker+beat o'rnini bosuvchi Go servis: periodik joblar (cron)
+        # + Redis Stream (goworker:tasks) on-demand tasklar. Backend bilan bir
+        # xil env secret'lari; engine deployment'larini tozalash uchun RBAC.
+        values: |
+          fullnameOverride: "worker-golang"
+          podLabels:
+            app: botmother
+            component: worker-golang
+          strategy:
+            type: Recreate
+          service:
+            enabled: false
+          probes:
+            startup:
+              enabled: false
+            readiness:
+              enabled: false
+            liveness:
+              enabled: false
+          podDisruptionBudget:
+            enabled: false
+          prometheus:
+            scrape: false
+          persistentVolumeClaims: []
+          serviceAccount:
+            create: true
+            name: worker-golang
+            rules:
+              - apiGroups: ["apps"]
+                resources: ["deployments"]
+                verbs: ["get", "list", "delete"]
+              - apiGroups: [""]
+                resources: ["secrets", "configmaps", "services"]
+                verbs: ["get", "list", "delete"]
+              - apiGroups: [""]
+                resources: ["pods"]
+                verbs: ["get", "list"]
+          envFrom:
+            - secretRef:
+                name: botmother-secret
+            - secretRef:
+                name: database-secret
+            - secretRef:
+                name: mongo-secret
+            - secretRef:
+                name: redis-secret
+          env:
+            - name: K8S_NAMESPACE
+              value: botmother
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+    - repoURL: https://github.com/BotSpace/worker-golang.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: botmother
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
