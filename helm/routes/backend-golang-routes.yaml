@@ -1,0 +1,26 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: backend-golang-api
+  namespace: botmother
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: default
+  hostnames:
+    - api.botspace.uz
+    - api.botmother.uz
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/v2
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/v1
+      backendRefs:
+        - name: backend-golang
+          port: 8080
