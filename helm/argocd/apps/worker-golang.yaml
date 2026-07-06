@@ -55,7 +55,7 @@ spec:
             - secretRef:
                 name: botmother-secret
             - secretRef:
-                name: database-secret
+                name: backend-golang-db
             - secretRef:
                 name: mongo-secret
             - secretRef:
