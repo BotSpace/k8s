@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: worker-golang
+  name: backend-worker
   namespace: argocd
   labels:
     app.kubernetes.io/part-of: botmother
@@ -14,14 +14,15 @@ spec:
       helm:
         valueFiles:
           - $values/helm/values.yaml
-        # Celery worker+beat o'rnini bosuvchi Go servis: periodik joblar (cron)
-        # + Redis Stream (goworker:tasks) on-demand tasklar. Backend bilan bir
-        # xil env secret'lari; engine deployment'larini tozalash uchun RBAC.
+        # Worker runs from the backend-golang image. The default image
+        # entrypoint starts the API; this deployment overrides it to run the
+        # worker binary built into the same image.
         values: |
-          fullnameOverride: "worker-golang"
+          fullnameOverride: "backend-worker"
+          command: ["/app/worker"]
           podLabels:
             app: botmother
-            component: worker-golang
+            component: backend-worker
           strategy:
             type: Recreate
           service:
@@ -40,7 +41,7 @@ spec:
           persistentVolumeClaims: []
           serviceAccount:
             create: true
-            name: worker-golang
+            name: backend-worker
             rules:
               - apiGroups: ["apps"]
                 resources: ["deployments"]
@@ -69,7 +70,7 @@ spec:
               memory: 64Mi
             limits:
               memory: 256Mi
-    - repoURL: https://github.com/BotSpace/worker-golang.git
+    - repoURL: https://github.com/BotSpace/backend-golang.git
       targetRevision: main
       ref: values
   destination:
