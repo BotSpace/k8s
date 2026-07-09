@@ -15,16 +15,21 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /api/v1/auth/me
-      backendRefs:
-        - name: web
-          port: 8000
-    - matches:
-        - path:
-            type: PathPrefix
             value: /api/v1/auth
       backendRefs:
         - name: auth
+          port: 8080
+    # Module/plugin system (catalog + github-webhook + CI redeploy hooks).
+    # Ported to the Go backend (plugin module, served under /api/v1). External
+    # hooks (GitHub, CI) POST the literal /api/v1 path and can't use the
+    # frontend's /api/v2 prefix, so route them straight to backend-golang
+    # instead of falling through to the old Django catch-all.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/v1/modules
+      backendRefs:
+        - name: backend-golang
           port: 8080
     - matches:
         - path:
