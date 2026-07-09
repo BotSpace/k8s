@@ -83,6 +83,7 @@ metadata:
 spec:
   hostnames:
     - umami.botspace.uz
+    - umami.iprogrammer.uz
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
