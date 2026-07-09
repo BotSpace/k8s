@@ -40,19 +40,6 @@ spec:
 apiVersion: gateway.nginx.org/v1alpha1
 kind: ClientSettingsPolicy
 metadata:
-  name: botmother-engine-plugin-ui-client-body
-  namespace: botmother
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: HTTPRoute
-    name: botmother-engine-plugin-ui
-  body:
-    maxSize: 200m
----
-apiVersion: gateway.nginx.org/v1alpha1
-kind: ClientSettingsPolicy
-metadata:
   name: botmother-frontend-client-body
   namespace: botmother
 spec:

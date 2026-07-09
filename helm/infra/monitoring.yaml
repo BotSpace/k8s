@@ -127,22 +127,3 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: engine-plugin
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  labels:
-    release: monitoring
-  name: mcp-server
-  namespace: monitoring
-spec:
-  endpoints:
-    - interval: 30s
-      path: /metrics
-      port: http
-  namespaceSelector:
-    matchNames:
-      - botmother
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: mcp-server
