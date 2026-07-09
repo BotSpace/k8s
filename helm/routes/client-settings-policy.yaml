@@ -88,3 +88,19 @@ spec:
     name: botmother-websocket
   body:
     maxSize: 200m
+---
+# The /api/v2 route (backend-golang-api) had no body-size policy, so the nginx
+# gateway default (1 MiB) 413'd file uploads. File uploads (dashboard -> Go
+# backend -> B2) travel this route; raise it to match the backend limit.
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: backend-golang-api-client-body
+  namespace: botmother
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: backend-golang-api
+  body:
+    maxSize: 60m
