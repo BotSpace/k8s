@@ -26,3 +26,8 @@ configMapGenerator:
   - name: botspace-overview-dashboard
     files:
       - botspace-overview.json
+  # Bot engine metrikalari (bot_* — xabar, update, node, xato, HTTP, CMS).
+  # Manba: PodMonitor `botmother-engine` (helm/infra/monitoring.yaml).
+  - name: botspace-engine-dashboard
+    files:
+      - botspace-engine.json

@@ -127,3 +127,32 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: engine-plugin
+---
+# Bot engine pods (release-*/debug-*) expose the engine's Prometheus bot_*
+# counters on the named "metrics" port (9090). They are created per-bot at
+# runtime (not by the botmother-app Helm chart), and their Service only
+# publishes :8000 — so we scrape the pods directly with a PodMonitor, selecting
+# the engine's own pod label `app: botmother-engine`.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: botmother-engine
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app: botmother-engine
+  podMetricsEndpoints:
+    - interval: 30s
+      path: /metrics
+      port: metrics
+      relabelings:
+        # Carry the pod's project_id label onto the scraped bot_* series so the
+        # dashboard can group / filter by project.
+        - sourceLabels: [__meta_kubernetes_pod_label_project_id]
+          targetLabel: project_id
