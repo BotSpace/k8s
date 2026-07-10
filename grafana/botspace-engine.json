@@ -134,7 +134,9 @@
             "mode": "fixed",
             "fixedColor": "green"
           },
-          "unit": "short"
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
         },
         "overrides": []
       },
@@ -144,7 +146,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(increase(bot_messages_sent_total{project_id=~\"$project\"}[$__range]))",
+          "expr": "round(sum(increase(bot_messages_sent_total{project_id=~\"$project\"}[$__range])))",
           "refId": "A",
           "legendFormat": "value"
         }
@@ -183,7 +185,9 @@
             "mode": "fixed",
             "fixedColor": "blue"
           },
-          "unit": "short"
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
         },
         "overrides": []
       },
@@ -193,7 +197,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(increase(bot_updates_total{project_id=~\"$project\"}[$__range]))",
+          "expr": "round(sum(increase(bot_updates_total{project_id=~\"$project\"}[$__range])))",
           "refId": "A",
           "legendFormat": "value"
         }
@@ -232,7 +236,9 @@
             "mode": "fixed",
             "fixedColor": "purple"
           },
-          "unit": "short"
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
         },
         "overrides": []
       },
@@ -281,7 +287,9 @@
             "mode": "fixed",
             "fixedColor": "red"
           },
-          "unit": "short"
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
         },
         "overrides": []
       },
@@ -291,7 +299,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(increase(bot_errors_total{project_id=~\"$project\"}[$__range]))",
+          "expr": "round(sum(increase(bot_errors_total{project_id=~\"$project\"}[$__range])))",
           "refId": "A",
           "legendFormat": "value"
         }
