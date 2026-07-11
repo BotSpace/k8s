@@ -323,8 +323,8 @@
    "type": "table",
    "title": "Top 10 bot — kelgan so'rovlar (update'lar)",
    "datasource": {
-    "type": "prometheus",
-    "uid": "${datasource}"
+    "type": "datasource",
+    "uid": "-- Mixed --"
    },
    "gridPos": {
     "h": 9,
@@ -362,7 +362,7 @@
      "color": {
       "mode": "thresholds"
      },
-     "noValue": "0"
+     "noValue": "—"
     },
     "overrides": [
      {
@@ -389,7 +389,7 @@
        },
        {
         "id": "custom.width",
-        "value": 200
+        "value": 170
        },
        {
         "id": "color",
@@ -407,12 +407,55 @@
      {
       "matcher": {
        "id": "byName",
-       "options": "project_id (bot)"
+       "options": "Bot nomi"
       },
       "properties": [
        {
         "id": "custom.width",
-        "value": 330
+        "value": 230
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Username"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 150
+       },
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "color-text"
+        }
+       },
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "text"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "project_id"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 300
+       },
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "auto"
+        }
        }
       ]
      }
@@ -420,17 +463,60 @@
    },
    "targets": [
     {
+     "refId": "A",
      "datasource": {
       "type": "prometheus",
       "uid": "${datasource}"
      },
      "expr": "topk(10, round(sum by (project_id) (increase(bot_updates_total{project_id=~\"$project\"}[$__range]))))",
-     "refId": "A",
      "instant": true,
      "format": "table"
+    },
+    {
+     "refId": "B",
+     "datasource": {
+      "type": "postgres",
+      "uid": "botspace-postgres-go"
+     },
+     "rawSql": "SELECT id::text AS project_id, name AS bot_name, coalesce(username,'') AS username FROM projects",
+     "format": "table",
+     "rawQuery": true
     }
    ],
    "transformations": [
+    {
+     "id": "labelsToFields",
+     "options": {
+      "mode": "columns"
+     }
+    },
+    {
+     "id": "merge",
+     "options": {}
+    },
+    {
+     "id": "joinByField",
+     "options": {
+      "byField": "project_id",
+      "mode": "inner"
+     }
+    },
+    {
+     "id": "filterByValue",
+     "options": {
+      "type": "include",
+      "match": "all",
+      "filters": [
+       {
+        "fieldName": "Value",
+        "config": {
+         "id": "isNotNull",
+         "options": {}
+        }
+       }
+      ]
+     }
+    },
     {
      "id": "organize",
      "options": {
@@ -438,12 +524,16 @@
        "Time": true
       },
       "renameByName": {
-       "project_id": "project_id (bot)",
-       "Value": "So'rovlar"
+       "bot_name": "Bot nomi",
+       "username": "Username",
+       "Value": "So'rovlar",
+       "project_id": "project_id"
       },
       "indexByName": {
-       "project_id": 0,
-       "Value": 1
+       "bot_name": 0,
+       "username": 1,
+       "Value": 2,
+       "project_id": 3
       }
      }
     },
@@ -464,8 +554,8 @@
    "type": "table",
    "title": "Top 10 bot — yuborilgan xabarlar",
    "datasource": {
-    "type": "prometheus",
-    "uid": "${datasource}"
+    "type": "datasource",
+    "uid": "-- Mixed --"
    },
    "gridPos": {
     "h": 9,
@@ -503,7 +593,7 @@
      "color": {
       "mode": "thresholds"
      },
-     "noValue": "0"
+     "noValue": "—"
     },
     "overrides": [
      {
@@ -530,7 +620,7 @@
        },
        {
         "id": "custom.width",
-        "value": 200
+        "value": 170
        },
        {
         "id": "color",
@@ -548,12 +638,55 @@
      {
       "matcher": {
        "id": "byName",
-       "options": "project_id (bot)"
+       "options": "Bot nomi"
       },
       "properties": [
        {
         "id": "custom.width",
-        "value": 330
+        "value": 230
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Username"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 150
+       },
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "color-text"
+        }
+       },
+       {
+        "id": "color",
+        "value": {
+         "mode": "fixed",
+         "fixedColor": "text"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "project_id"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 300
+       },
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "auto"
+        }
        }
       ]
      }
@@ -561,17 +694,60 @@
    },
    "targets": [
     {
+     "refId": "A",
      "datasource": {
       "type": "prometheus",
       "uid": "${datasource}"
      },
      "expr": "topk(10, round(sum by (project_id) (increase(bot_messages_sent_total{project_id=~\"$project\"}[$__range]))))",
-     "refId": "A",
      "instant": true,
      "format": "table"
+    },
+    {
+     "refId": "B",
+     "datasource": {
+      "type": "postgres",
+      "uid": "botspace-postgres-go"
+     },
+     "rawSql": "SELECT id::text AS project_id, name AS bot_name, coalesce(username,'') AS username FROM projects",
+     "format": "table",
+     "rawQuery": true
     }
    ],
    "transformations": [
+    {
+     "id": "labelsToFields",
+     "options": {
+      "mode": "columns"
+     }
+    },
+    {
+     "id": "merge",
+     "options": {}
+    },
+    {
+     "id": "joinByField",
+     "options": {
+      "byField": "project_id",
+      "mode": "inner"
+     }
+    },
+    {
+     "id": "filterByValue",
+     "options": {
+      "type": "include",
+      "match": "all",
+      "filters": [
+       {
+        "fieldName": "Value",
+        "config": {
+         "id": "isNotNull",
+         "options": {}
+        }
+       }
+      ]
+     }
+    },
     {
      "id": "organize",
      "options": {
@@ -579,12 +755,16 @@
        "Time": true
       },
       "renameByName": {
-       "project_id": "project_id (bot)",
-       "Value": "Xabarlar"
+       "bot_name": "Bot nomi",
+       "username": "Username",
+       "Value": "Xabarlar",
+       "project_id": "project_id"
       },
       "indexByName": {
-       "project_id": 0,
-       "Value": 1
+       "bot_name": 0,
+       "username": 1,
+       "Value": 2,
+       "project_id": 3
       }
      }
     },
