@@ -12,6 +12,20 @@ spec:
     - api.botspace.uz
     - botlarnionasi.jscorp.uz
   rules:
+    # MCP OAuth authorization server — migrated off the Django `web` catch-all
+    # to the Go backend (oauth module), which authenticates the UUID user_id
+    # these tokens carry (the Django SimpleJWT path 500'd on it). Bare,
+    # un-prefixed paths served at root by backend-golang (no /api/v1 rewrite).
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known/oauth-authorization-server
+        - path:
+            type: PathPrefix
+            value: /auth/oauth
+      backendRefs:
+        - name: backend-golang
+          port: 8080
     - matches:
         - path:
             type: PathPrefix
