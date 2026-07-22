@@ -17,7 +17,6 @@ spec:
     - https://github.com/BotSpace/marketplace.git
     - https://github.com/BotSpace/auth.git
     - https://github.com/BotSpace/k8s.git
-    - https://github.com/JscorpTech/engine-plugin.git
     - https://github.com/JscorpTech/botmother-webhook-service.git
     - https://github.com/JscorpTech/websocket-golang.git
     - https://github.com/JscorpTech/k8s-watcher.git

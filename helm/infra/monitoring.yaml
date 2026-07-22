@@ -109,25 +109,6 @@ spec:
     matchLabels:
       app.kubernetes.io/instance: websocket
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  labels:
-    release: monitoring
-  name: engine-plugin
-  namespace: monitoring
-spec:
-  endpoints:
-    - interval: 30s
-      path: /metrics
-      port: http
-  namespaceSelector:
-    matchNames:
-      - botmother
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: engine-plugin
----
 # Bot engine pods (release-*/debug-*) expose the engine's Prometheus bot_*
 # counters on the named "metrics" port (9090). They are created per-bot at
 # runtime (not by the botmother-app Helm chart), and their Service only
