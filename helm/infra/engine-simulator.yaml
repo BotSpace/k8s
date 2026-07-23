@@ -20,7 +20,7 @@ spec:
         - name: iprogrammer-registry
       containers:
         - name: engine-simulator
-          image: registry.iprogrammer.uz/botspace/golang-engine:4.0.5-prod
+          image: registry.iprogrammer.uz/botspace/golang-engine:4.0.6-prod
           command: ["./simulator"]
           ports:
             - containerPort: 8200
