@@ -29,11 +29,18 @@ spec:
           env:
             - name: REDIS_ENABLED
               value: "true"
-            - name: REDIS_ADDR
+            - name: REDIS_HOST
               valueFrom:
                 secretKeyRef:
                   name: backend-golang-app
                   key: APP_ENGINE_REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: backend-golang-app
+                  key: APP_ENGINE_REDIS_PORT
+            - name: REDIS_ADDR
+              value: "$(REDIS_HOST):$(REDIS_PORT)"
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
