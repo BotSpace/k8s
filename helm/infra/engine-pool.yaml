@@ -21,7 +21,7 @@ spec:
       imagePullSecrets:
         - name: iprogrammer-registry
       containers:
-        - name: engine-pool
+        - name: engine
           image: registry.iprogrammer.uz/botspace/golang-engine:55e8269
           command: ["/app/supervisor"]
           ports:
