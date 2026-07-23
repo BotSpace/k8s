@@ -22,7 +22,7 @@ spec:
         - name: iprogrammer-registry
       containers:
         - name: engine
-          image: registry.iprogrammer.uz/botspace/golang-engine:55e8269
+          image: registry.iprogrammer.uz/botspace/golang-engine:e3bdbc5
           command: ["/app/supervisor"]
           ports:
             - containerPort: 8000
