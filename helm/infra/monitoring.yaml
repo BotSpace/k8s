@@ -1,10 +1,9 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Prometheus ServiceMonitors for the Botmother stack.
 #
-# All apps in the botmother namespace are deployed by the same Helm chart
-# (`botmother-app`), so the service for each app carries the label
-# `app.kubernetes.io/instance: <app-name>`. Each ServiceMonitor matches
-# its target by that instance label and scrapes the named port `http`.
+# Helm app services carry `app.kubernetes.io/instance: <app-name>`.
+# The standalone engine-pool Service uses `app: botmother-engine-pool`.
+# ServiceMonitors select these services and scrape their named `http` port.
 #
 # The kube-prometheus-stack Prometheus selects ServiceMonitors via the
 # label `release: monitoring` — all entries here have that label.
@@ -108,6 +107,31 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: websocket
+---
+# One target per worker endpoint, not the load-balanced Service address.
+# Child-process metrics already carry the canonical project_id label.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: monitoring
+  name: engine-pool
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - botmother
+  selector:
+    matchLabels:
+      app: botmother-engine-pool
+  endpoints:
+    - interval: 15s
+      scrapeTimeout: 10s
+      path: /metrics
+      port: http
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_namespace]
+          targetLabel: namespace
 ---
 # Bot engine pods (release-*/debug-*) expose the engine's Prometheus bot_*
 # counters on the named "metrics" port (9090). They are created per-bot at
