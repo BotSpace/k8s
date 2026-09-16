@@ -25,7 +25,8 @@ spec:
           image: registry.iprogrammer.uz/botspace/golang-engine:52f26c7
           command: ["/app/supervisor"]
           ports:
-            - containerPort: 8000
+            - name: http
+              containerPort: 8000
           env:
             - name: REDIS_ENABLED
               value: "true"
@@ -58,12 +59,13 @@ spec:
                 secretKeyRef:
                   name: backend-golang-app
                   key: APP_INTERNAL_TOKEN
-            - name: MONGO_ADDR
+            # Supervisor outbox replay must use the same destination as backend CMS.
+            - name: APP_MONGO_URL
               valueFrom:
                 secretKeyRef:
                   name: backend-golang-app
-                  key: APP_ENGINE_MONGO_ADDR
-            - name: MONGO_DB_NAME
+                  key: APP_MONGO_URL
+            - name: APP_ENGINE_MONGO_DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: backend-golang-app
