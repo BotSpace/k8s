@@ -21,3 +21,14 @@ Thumbs.db
 *.bak
 *.swp
 *~
+
+# Credential manifests stay outside Git.
+secret.yaml
+secret.yml
+secrets.yaml
+secrets.yml
+*.secret.yml
+*-secret.yml
+*.pem
+*.key
+*~
